@@ -1,0 +1,19 @@
+site_name: MRBIGR
+repo_url: https://github.com/CrazyHsu/MRBIGR/
+site_author: Qian Cheng
+nav:
+    - Home: index.md
+    - QuickStart: QuickStart.md
+    - Tutorial: Tutorial.md
+    - About: about.md
+theme:
+    name: readthedocs
+    highlightjs: true
+    hljs_languages:
+        - yaml
+        - rust
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/CrazyHsu/MRBIGR/
+      name: Github repository for MRBIGR
