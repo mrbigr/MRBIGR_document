@@ -1,352 +1,417 @@
 # <center>Tutorial</center>
 <center>Introduction of details and advanced usage of MRBIGR</center>
 ___
-In this part, the implementation of each module/function/parameter in MRBIGR will be introduced in detail, and several real-data results will also be shown to help users better understand the functions of MRBIGR. 
+In this part, the implementation of each module/function/parameter in MRBIGR will be introduced in detail, and several real-data results will also be shown to help users better understand the functions of MRBIGR. The example data is from [MRBIGR_data](https://zenodo.org/records/13955396/files/MRBIGR_data.20241019.tar.gz), which can be prepared by following the [code](QuickStart.md#2-data-preparation).
 
-## Genotype data based analysis
-The genotype data analysis module takes plink-bed format genotype data as input, can be invoked through the subcommand `geno`, which includes 9 functions: `-convert`, `-qc`, `-imput`, `-clump`, `-kinship`, `-pca`, `-tsne`, `-tree` and `–anno`. `-convert` is used for genotype data format conversion; `-qc` is used for quality control of genotype data; `-imput` introduced several simple methods for fast imputation of genotype data; `-clump` is used to keep only one representative SNP per region of LD based on a clumping method, to reduce the dimensionality of the original genotype data; `-kinship` is used to calculate the kinship matrix from genotype data;`-pca` is used to perform principle component analysis from genotype data; `-tsne` is used to perform t-SNE analysis from genotype data; `-tree` is used to build a ML-tree from genotype data; `-anno` is used to annotate vcf-format genotype data.
+----
+## 1. Genotypic data based analysis
+The genotypic data analysis module takes plink-bed format genotypic data as input, can be invoked through the subcommand `geno`, which includes 9 functions: `-convert`, `-qc`, `-imput`, `-clump`, `-kinship`, `-pca`, `-tsne`, `-tree` and `-anno`. `-convert` is used for genotypic data format conversion; `-qc` is used for quality control of genotypic data; `-imput` introduced several simple methods for fast imputation of genotypic data; `-clump` is used to keep only one representative SNP per region of LD based on a clumping method, to reduce the dimensionality of the original genotypic data; `-kinship` is used to calculate the kinship matrix from genotypic data;`-pca` is used to perform principle component analysis from genotypic data; `-tsne` is used to perform t-SNE analysis from genotypic data; `-tree` is used to build a ML-tree from genotypic data; `-anno` is used to annotate vcf-format genotypic data.
 
-### 1.Format conversion of genotypic data
-MRBIGR supports the conversion of Hapmap/VCF format genotype data to plink-bed format, as well as the conversion of plink-bed format to VCF format. This function can be called through the parameter `-convert`. The command line is as follows:
+### 1.1 Format conversion of genotypic data
+MRBIGR supports the conversion of Hapmap/VCF format genotypic data to plink-bed format, as well as the conversion of plink-bed format to VCF format. This function can be called through the parameter `-convert`. The command line is as follows:
 ```py
-# Hapmap to plink-bed  
-MRBIGR.py geno -convert -hapmap test.hapmap -o test_hmp  
-# VCF to plink-bed  
-MRBIGR.py geno -convert -vcf test.vcf -o test_vcf  
-# plink-bed to VCF  
-MRBIGR.py geno -convert –g geno –o geno.vcf  
+# Hapmap to plink-bed  
+docker exec -it mrbigr_env MRBIGR.py geno -convert -hapmap MRBIGR_data/chr_HAMP_female.hmp -od MRBIGR_output/demo -o chr_HAMP_female.plink
+# plink-bed to VCF  
+docker exec -it mrbigr_env MRBIGR.py geno -convert -g MRBIGR_output/demo/geno/chr_HAMP_female.plink -od MRBIGR_output/demo -o chr_HAMP_female.vcf
+# VCF to plink-bed  
+docker exec -it mrbigr_env MRBIGR.py geno -convert -vcf MRBIGR_output/demo/geno/chr_HAMP_female.vcf.vcf -od MRBIGR_output/demo -o geno_vcf 
 ```
-The subcommand `geno` invokes the genotype data analysis module; parameter `–convert` calls the data format conversion function; `-hapmap` and `–vcf` are the correspond format file name; `-g` is the prefix of plink-bed format input data, `-o` is the name of output data.
-### 2.Quality control of genotype data
-The raw genotype data may contain SNPs with low values of MAF (minor allele frequency), high level of missing rate, as well as samples with extreme high missing rate. These data should be filtered before downstream analysis. The `geno` module provides a QC-based genotype data filter function which can be called through parameter `–qc`. The command line is as follows:
+The subcommand `geno` invokes the genotypic data analysis module; parameter `-convert` calls the data format conversion function; `-hapmap` and `-vcf` are the correspond format file name; `-g` is the prefix of plink-bed format input data; `-o` is the name of output data; `-od` is the output directory.
+### 1.2 Quality control of genotypic data
+The raw genotypic data may contain SNPs with low values of MAF (minor allele frequency), high level of missing rate, as well as samples with extreme high missing rate. These data should be filtered before downstream analysis. The `geno` module provides a QC-based genotypic data filter function which can be called through parameter `-qc`. The command line is as follows:
 ```py
-MRBIGR.py geno -qc -g geno -o geno_qc -maf 0.05 -mis 0.2 -mind 0.2  
+docker exec -it mrbigr_env MRBIGR.py geno -qc -g MRBIGR_data/chr_HAMP -od MRBIGR_output/demo -o chr_HAMP_qc -maf 0.05 -mis 0.2 -mind 0.2
 ```
-The subcommand geno invokes the genotype analysis module; parameter `–qc` calls the quality control function; `–g` is the plink-bed format input genotype data; `-o` is the output genotype data prefix; `-maf` is the MAF for a SNP to be kept; `-mis` is the maximum proportion of missing values for a SNP to be kept; -mind is the maximum proportion of missing values for a sample to be kept. The parameters `–maf`, `-mis` and `–mind` have default values and are not mandatory.
-### 3. Fast imputation of missing genotype values
-MRBIGR provides several fast and simple methods to impute the missing values in the input genotype data, either `“random”` (sampling according to allele frequencies), `“mean0”` (rounded mean), `“mean2”` (rounded mean to 2 decimal places), `“mode”` (most frequent call). It should be noted that these methods are just for fast imputation of test dataset, more accurate imputation of genotype data should be performed using other professional imputation tools such as Beagle. The command line is as follows:
+The subcommand geno invokes the genotype analysis module; parameter `-qc` calls the quality control function; `-g` is the plink-bed format input genotypic data; `-o` is the output genotypic data prefix; `-od` is the output directory; `-maf` is the MAF for a SNP to be kept; `-mis` is the maximum proportion of missing values for a SNP to be kept; -mind is the maximum proportion of missing values for a sample to be kept. The parameters `-maf`, `-mis` and `-mind` have default values and are not mandatory.
+### 1.3 Fast imputation of missing genotype values
+MRBIGR provides several fast and simple methods to impute the missing values in the input genotypic data, either `random` (sampling according to allele frequencies), `mean0` (rounded mean), `mean2` (rounded mean to 2 decimal places), `mode` (most frequent call). It should be noted that these methods are just for fast imputation of test dataset, more accurate imputation of genotypic data should be performed using other professional imputation tools such as Beagle. The command line is as follows:
 ```py
-MRBIGR.py geno -imput -method mode -g geno_qc -o geno  
+docker exec -it mrbigr_env MRBIGR.py geno -imput -method mode -g MRBIGR_output/demo/geno/chr_HAMP_qc_qc -od MRBIGR_output/demo -o geno_impute
 ```
-The subcommand `geno` invokes the genotype analysis module; parameter `–imput` calls the genotype imputation function; `-method` is the imputation method; `–g` is the plink-bed format input genotype data, `-o` is the output genotype data prefix (<font color=blue>suffix_imput</font> will be added automatically for the output files).
-### 4. Dimensionality reduction of genotype data through SNP clumping
-SNP clumping is used to keep only one representative SNP per region of LD, which can be used to reduce dimensionality of the genotype data. This method is proposed in R package bigsnpr, it is similar to the LD-based SNP pruning method in PLINK, but SNP clumping has the advantage of only the SNP with the highest MAF is kept in a LD region and more genetic variation can be kept. The command line is as follows:
+The subcommand `geno` invokes the genotype analysis module; parameter `-imput` calls the genotype imputation function; `-method` is the imputation method; `-g` is the plink-bed format input genotypic data; `-o` is the output genotypic data prefix (<font color=blue>suffix_imput</font> will be added automatically for the output files); `-od` is the output directory.
+### 1.4 Dimensionality reduction of genotypic data through SNP clumping
+SNP clumping is used to keep only one representative SNP per region of LD, which can be used to reduce dimensionality of the genotypic data. This method is proposed in R package bigsnpr, it is similar to the LD-based SNP pruning method in PLINK, but SNP clumping has the advantage of only the SNP with the highest MAF is kept in a LD region and more genetic variation can be kept. The command line is as follows:
 ```py
-MRBIGR.py geno -clump -g geno_qc -o geno  
+docker exec -it mrbigr_env MRBIGR.py geno -clump -g MRBIGR_data/chr_HAMP -od MRBIGR_output/demo -o chr_HAMP_380k -r 0.7  
 ```
-The subcommand `geno` invokes the genotype analysis module; parameter `–clump` calls the genotype clumping function to keep only one representative SNP per region of LD; `–g` is the plink-bed format input genotype data, `-o` is the output genotype data prefix (<font color=blue>suffix _clump</font> will be added automatically for the output files).
-### 5.Calculation of kinship matrix from genotype data
+The subcommand `geno` invokes the genotype analysis module; parameter `-clump` calls the genotype clumping function to keep only one representative SNP per region of LD; `-g` is the plink-bed format input genotypic data, `-o` is the output genotypic data prefix (<font color=blue>suffix _clump</font> will be added automatically for the output files); `-od` is the output directory.
+### 1.5 Calculation of kinship matrix from genotypic data
 Pairwise kinship coefficients calculation is used as a measurement of genetic similarity between individuals. MRBIGR can generate a kinship/relatedness matrix by the below command:
 ```py
-MRBIGR.py geno -kinship -g geno_clump -o kinship  
+docker exec -it mrbigr_env MRBIGR.py geno -kinship -g MRBIGR_data/chr_HAMP -o chr_HAMP.kinship -od MRBIGR_output/demo
 ```
-The subcommand `geno` invokes the genotype analysis module; parameter `–kinship` calls the kinship calculation function; `–g` is the plink-bed format input genotype data, `-o` is the output file prefix. The output file <font color=blue>kinship.cXX.txt</font> could be found in a directory named output.
-### 6.Principle component analysis from genotype data
-Principal components analysis (PCA) is commonly applied to population structure inference and dimension reduction of the data. Top PCs calculated from the genotype data can reflect population structure among the sample individuals. MRBIGR can perform PCA analysis by the below command:
+The subcommand `geno` invokes the genotype analysis module; parameter `-kinship` calls the kinship calculation function; `-g` is the plink-bed format input genotypic data, `-o` is the output file prefix. The output file <font color=blue>kinship.cXX.txt</font> could be found in a directory named output; `-od` is the output directory.
+### 1.6 Principle component analysis from genotypic data
+Principal components analysis (PCA) is commonly applied to population structure inference and dimension reduction of the data. Top PCs calculated from the genotypic data can reflect population structure among the sample individuals. MRBIGR can perform PCA analysis by the below command:
 ```py
-MRBIGR.py geno -pca -g geno_clump -o geno -dim 10  
+docker exec -it mrbigr_env MRBIGR.py geno -pca -g MRBIGR_data/chr_HAMP -o chr_HAMP.geno -dim 10 -od MRBIGR_output/demo 
 ```
-The subcommand `geno` invokes the genotype analysis module; parameter `–pca` calls the PCA analysis function; `–g` is the plink-bed format input genotype data, `-o` is the output file prefix, `-dim` is the dimensionality or PCs for the output data, with a default value 10. Then, a CSV format output file named <font color=blue>geno_pc.csv</font> would be generated.
-### 7. t-SNE analysis from genotype data
+The subcommand `geno` invokes the genotype analysis module; parameter `-pca` calls the PCA analysis function; `-g` is the plink-bed format input genotypic data; `-o` is the output file prefix; `-od` is the output directory; `-dim` is the dimensionality or PCs for the output data, with a default value 10. Then, a CSV format output file named <font color=blue>geno_pc.csv</font> would be generated.
+### 1.7 t-SNE analysis from genotypic data
 t-SNE (t-Distributed Stochastic Neighbor Embedding) is a machine learning algorithm for dimensional reduction. As a nonlinear dimensional reduction algorithm, t-SNE performs better than PCA, and is suitable for visualization of population structure. MRBIGR first use PCA to reduce the data to 50 dimensions, and then use t-SNE algorithm to further reduced the data to 2 or 3 dimensions. The command line is as follows:
 ```py
-MRBIGR.py geno -tsne -g geno_clump -o geno -dim 3  
+docker exec -it mrbigr_env MRBIGR.py geno -tsne -g MRBIGR_data/chr_HAMP -o chr_HAMP.geno -dim 3 -od MRBIGR_output/demo
 ```
-The subcommand `geno` invokes the genotype analysis module; parameter `–tsne` calls the t-SNE analysis function; `–g` is the plink-bed format input genotype data, `-o` is the output file prefix, `-dim` is the dimensionality for the output data, usually 2 or 3, with a default value 3. Then, a CSV format output file named <font color=blue>geno_tsne.csv</font> would be generated.
-### 8.Phylogenetic analysis from genotype data
-MRBIGR introduces a one-step phylogenetic analysis function from genotype data, which facilitate the visualization of relatedness of individuals and population structure. A nwk format maximum likelihood (ML) tree can be generated follow this command:
+The subcommand `geno` invokes the genotype analysis module; parameter `-tsne` calls the t-SNE analysis function; `-g` is the plink-bed format input genotypic data; `-o` is the output file prefix; `-od` is the output directory; `-dim` is the dimensionality for the output data, usually 2 or 3, with a default value 3. Then, a CSV format output file named <font color=blue>geno_tsne.csv</font> would be generated.
+### 1.8 Phylogenetic analysis from genotypic data
+MRBIGR introduces a one-step phylogenetic analysis function from genotypic data, which facilitate the visualization of relatedness of individuals and population structure. A nwk format maximum likelihood (ML) tree can be generated follow this command:
 ```py
-MRBIGR.py geno -tree -g geno_clump -o geno_tree  
+docker exec -it mrbigr_env MRBIGR.py geno -tree -g MRBIGR_output/demo/geno/chr_HAMP_380k_clump -o chr_HAMP_380k_clump.geno_tree -od MRBIGR_output/demo  
 ```
-The subcommand `geno` invokes the genotype analysis module; parameter `–tree` calls the phylogenetic analysis function; `–g` is the plink-bed format input genotype data, `-o` is the output file prefix. Then, a nwk format output file named <font color=blue>geno_tree.tree.nwk</font>  and some other related files <font color=blue>ggeno_tree.*</font>  would be generated.
-### 9.Functional annotation of genotype data
-This function in MRBIGR is relied on ANNOVAR, an efficient software tool to utilize update-to-date information to functionally annotate genetic variants. Only `vcf-format` genotype data is supported as input, plink-bed format genotype data should be converted to VCF format using the `–convert` function. If annotation is performed for the first time, an annotation database should be built by adding the parameters `–gtf` and `–fa`. The command line is as follows:
+The subcommand `geno` invokes the genotype analysis module; parameter `-tree` calls the phylogenetic analysis function; `-g` is the plink-bed format input genotypic data; `-o` is the output file prefix; `-od` is the output directory. Then, a nwk format output file named <font color=blue>geno_tree.tree.nwk</font>  and some other related files <font color=blue>ggeno_tree.*</font>  would be generated.
+### 1.9 Functional annotation of genotypic data
+This function in MRBIGR is relied on ANNOVAR, an efficient software tool to utilize update-to-date information to functionally annotate genetic variants. Only `vcf-format` genotypic data is supported as input, plink-bed format genotypic data should be converted to VCF format using the `-convert` function. If annotation is performed for the first time, an annotation database should be built by adding the parameters `-gtf` and `-fa`. The command line is as follows:
 ```py
-MRBIGR.py geno -anno -vcf test.vcf -o testvcf_anno -db ZmB73 -dbdir ./ref -gtf ./ref/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.51.chr.gtf -fa ./ref/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.dna.toplevel.fa  
+gunzip -k MRBIGR_data/Zea_mays.B73_RefGen_v4.50.gtf.gz
+gunzip -k MRBIGR_data/Zea_mays.B73_RefGen_v4.dna.toplevel.fa.gz
+
+docker exec -it mrbigr_env MRBIGR.py geno -anno -vcf MRBIGR_output/demo/geno/chr_HAMP_female.vcf.vcf -o chr_HAMP_female.vcf_anno -od MRBIGR_output/demo -db ZmB73 -dbdir MRBIGR_output/demo/geno/ref -gtf MRBIGR_data/Zea_mays.B73_RefGen_v4.50.gtf -fa MRBIGR_data/Zea_mays.B73_RefGen_v4.dna.toplevel.fa 
 ```
-The subcommand `geno` invokes the genotype analysis module; parameter `–anno` calls the annotation function; `–vcf` is the vcf-format input genotype data, `-o` is the output file prefix; `-db` is the output database name; `-dbdir` is the output database directory; `-fa` is the reference genome sequences file in FASTA format; `-gtf` is the reference gene annotation file in GTF format. Then, MRBIGR would generate an annotation database and perform functional annotate for genetic variants automatically. The output annotation result files include <font color=blue>testvcf_anno.ZmB73_multianno.vcf, testvcf_anno.ZmB73_multianno.bed, and testvcf_anno.ZmB73_largeEffect.bed.</font> If the annotation database has been built before, the parameters `–gtf` and `–fa` are no longer need, and the parameters `–db` and `–dbdir` are the input database name and database directory, respectively. In this case, the command line is as follows:
+The subcommand `geno` invokes the genotype analysis module; parameter `-anno` calls the annotation function; `-vcf` is the vcf-format input genotypic data; `-o` is the output file prefix; `-od` is the output directory; `-db` is the output database name; `-dbdir` is the output database directory; `-fa` is the reference genome sequences file in FASTA format; `-gtf` is the reference gene annotation file in GTF format. Then, MRBIGR would generate an annotation database and perform functional annotate for genetic variants automatically. The output annotation result files include <font color=blue>testvcf_anno.ZmB73_multianno.vcf, testvcf_anno.ZmB73_multianno.bed, and testvcf_anno.ZmB73_largeEffect.bed.</font> If the annotation database has been built before, the parameters `-gtf` and `-fa` are no longer need, and the parameters `-db` and `-dbdir` are the input database name and database directory, respectively. In this case, the command line is as follows:
 ```py
-MRBIGR.py geno -anno -vcf test2.vcf -o testvcf2_anno -db ZmB73 -dbdir ./ref -gtf ./ref/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.51.chr.gtf  
+docker exec -it mrbigr_env MRBIGR.py geno -anno -vcf MRBIGR_output/demo/geno/chr_HAMP_female.vcf.vcf -o chr_HAMP_female.vcf_anno -od MRBIGR_output/demo -db ZmB73 -dbdir MRBIGR_output/demo/geno/ref
 ```
 
-## Phenotype data based analysis
-The phenotype data analysis module takes a CSV format phenotype file with the first column and the first row should be the names of samples and traits as input, can be invoked through the subcommand `pheno`, which includes 5 functions: `-qc`, `-imput`, `-scale`, `-correct`, and `–merge`. `-qc` is used for quality control of phenotype data; `-imput` is used for imputation of missing values in phenotype data; `-scale` is used for data scaling, normalization, standardization or transformation of phenotype data; `-correct` is used for population structure based phenotype data correction; `-merge` is used to merge a trait from different environment or years using either the methods of mean values, BLUP or BLUE.
-### 1.Quality control of phenotype data
-Quality control of the original phenotype data include transposition of the original phenotype matrix if needed, removal of outlier data points based on z-score or boxplot methods, filtering traits with high level of missing rate and low average values. In this function, either of the parameters `–tr`, `–rout`, `-mis` and `–val` is optional. If you want to perform quality control use all the default parameters, the command line looks like this
+---
+## 2. Phenotypic data based analysis
+The phenotypic data analysis module takes a CSV format phenotype file with the first column and the first row should be the names of samples and traits as input, can be invoked through the subcommand `pheno`, which includes 5 functions: `-qc`, `-imput`, `-scale`, `-correct`, and `-merge`. `-qc` is used for quality control of phenotypic data; `-imput` is used for imputation of missing values in phenotypic data; `-scale` is used for data scaling, normalization, standardization or transformation of phenotypic data; `-correct` is used for population structure based phenotypic data correction; `-merge` is used to merge a trait from different environment or years using either the methods of mean values, BLUP or BLUE.
+### 2.1 Quality control of phenotypic data
+Quality control of the original phenotypic data include transposition of the original phenotype matrix if needed, removal of outlier data points based on z-score or boxplot methods, filtering traits with high level of missing rate and low average values. In this function, either of the parameters `-tr`, `-rout`, `-mis` and `-val` is optional. If you want to perform quality control use all the default parameters, the command line looks like this
 ```py
-MRBIGR.py pheno –-qc -p pheno.csv -o pheno_qc -rout  zscore -mis 0.1 -val  0.1  
+docker exec -it mrbigr_env MRBIGR.py pheno -qc -p MRBIGR_data/blup_traits_final.new.csv -o blup_traits_final.qc -od MRBIGR_output/demo -rout zscore -mis 0.1 -val 0.1  
 ```
-The subcommand `pheno` invokes the phenotype analysis module; parameter `–qc` calls the quality control function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-mis` is the missing rate cutoff with default value 0.5; `-val` is the small value cutoff with default value 0.1; `-rout` means outlier removal of phenotypic values with the default method z-score. If you want to perform quality control use personalized parameters, the command line could be as follows:
+The subcommand `pheno` invokes the phenotype analysis module; parameter `-qc` calls the quality control function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-mis` is the missing rate cutoff with default value 0.5; `-val` is the small value cutoff with default value 0.1; `-rout` means outlier removal of phenotypic values with the default method z-score. If you want to perform quality control use personalized parameters, the command line could be as follows:
 ```py
-# transposition of the original phenotype matrix  
-MRBIGR.py pheno –qc -tr -p pheno.csv -o pheno_tr  
-# reset missing rate cutoff, skip small value filter and outlier removal  
-MRBIGR.py pheno –qc -p pheno.csv -o pheno_qc -mis 0.1  
-# skip small value filter and set outlier removal method to boxplot  
-MRBIGR.py pheno –qc -p pheno.csv -o pheno_qc -rout boxplot –mis 0.1
+# transposition of the original phenotype matrix  
+docker exec -it mrbigr_env MRBIGR.py pheno -qc -tr -p MRBIGR_data/blup_traits_final.new.csv -o blup_traits_final.tr -od MRBIGR_output/demo  
+# reset missing rate cutoff, skip small value filter and outlier removal  
+docker exec -it mrbigr_env MRBIGR.py pheno -qc -p MRBIGR_data/blup_traits_final.new.csv -o blup_traits_final.qc -mis 0.1 -od MRBIGR_output/demo  
+# skip small value filter and set outlier removal method to boxplot  
+docker exec -it mrbigr_env MRBIGR.py pheno -qc -p MRBIGR_data/blup_traits_final.new.csv -o blup_traits_final.qc -rout boxplot -mis 0.1 -od MRBIGR_output/demo 
 ```
-### 2.Imputation of missing phenotype values
+### 2.2 Imputation of missing phenotype values
 There are three different phenotype imputation methods provided by MRBIGR: `mean`, `median`, `most_frequent`. The missing phenotype values in input file should be defined as NA, and the command line is as follows:
 ```py
-MRBIGR.py pheno –-imput -p pheno_qc.phe.csv -o pheno_imput –method most_frequent  
+docker exec -it mrbigr_env MRBIGR.py pheno -imput -p MRBIGR_output/demo/pheno/blup_traits_final.qc.phe.csv -o blup_traits_final.qc.imput -od MRBIGR_output/demo -method most_frequent  
 ```
-The subcommand `pheno` invokes the phenotype analysis module; parameter `–imput` calls the phenotype imputation function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-method` is the imputation method. After this step, a phenotype file named <font color=blue>pheno_imput.phe.csv</font> with no missing value would be generated.
-### 3.Scaling and normalization of phenotype data
-MRBIGR provides multiple commonly used phenotype data scaling and normalization methods, such as logarithmization, z-score standarlization, box-cox normalization, normal quantile normalization. These scaling and normalization methods are applicable to different types of phenotype data, like agronomic traits, transcripts expression data, metabolites intensity data. The command line is as follows:
+The subcommand `pheno` invokes the phenotype analysis module; parameter `-imput` calls the phenotype imputation function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-method` is the imputation method. After this step, a phenotype file named <font color=blue>pheno_imput.phe.csv</font> with no missing value would be generated.
+### 2.3 Scaling and normalization of phenotypic data
+MRBIGR provides multiple commonly used phenotypic data scaling and normalization methods, such as logarithmization, z-score standarlization, box-cox normalization, normal quantile normalization. These scaling and normalization methods are applicable to different types of phenotypic data, like agronomic traits, transcripts expression data, metabolites intensity data. The command line is as follows:
 ```py
-MRBIGR.py pheno –scale -p pheno_imput.phe.csv –o pheno_norm –boxcox -minmax
+docker exec -it mrbigr_env MRBIGR.py pheno -scale -p MRBIGR_output/demo/pheno/blup_traits_final.qc.imput.phe.csv -o blup_traits_final.qc.imput.norm -od MRBIGR_output/demo -boxcox -minmax
 ```
-The subcommand `pheno` invokes the phenotype analysis module; parameter `–scale` calls the phenotype scaling/normalization/standardization/transformation function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-boxcox` and `–minmax` means use both Box-Cox and Min-Max methods to transform the data. Box-Cox transformation is used to transform each trait to meet normality assumptions, a lambda is calculated per trait and used to transform each trait, while Min-Max scaling is used to scale the values to 0-1. Other optional methods are `-log2，-log10，-ln，-qqnorm，-zscore`，and `-robust`.
-### 4.Correction of phenotype data base on population structure
-Since population structure may lead to phenotype data distributed in different levels, in some cases, correction of phenotype values to the same level based on population structure may help downstream analysis. The `–correct` function in MRBIGR use a PCA file, which can be generated through genotype data, to perform phenotype data correction. The command line is as follows:
+The subcommand `pheno` invokes the phenotype analysis module; parameter `-scale` calls the phenotype scaling/normalization/standardization/transformation function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-boxcox` and `-minmax` means use both Box-Cox and Min-Max methods to transform the data. Box-Cox transformation is used to transform each trait to meet normality assumptions, a lambda is calculated per trait and used to transform each trait, while Min-Max scaling is used to scale the values to 0-1. Other optional methods are `-log2，-log10，-ln，-qqnorm，-zscore`，and `-robust`.
+### 2.4 Correction of phenotypic data base on population structure
+Since population structure may lead to phenotypic data distributed in different levels, in some cases, correction of phenotype values to the same level based on population structure may help downstream analysis. The `-correct` function in MRBIGR use a PCA file, which can be generated through genotypic data, to perform phenotypic data correction. The command line is as follows:
 ```py
-MRBIGR.py pheno -correct -p pheno_imput.phe.csv -o pheno_correct -pca geno_pca.csv 
+docker exec -it mrbigr_env MRBIGR.py pheno -correct -p MRBIGR_output/demo/pheno/blup_traits_final.qc.imput.phe.csv -o blup_traits_final.qc.imput.pca_correct -od MRBIGR_output/demo -pca MRBIGR_output/demo/geno/chr_HAMP.geno_pca.csv 
 ```
-The subcommand `pheno` invokes the phenotype analysis module; parameter `–correct` calls the phenotype correct function; `-p` is the input phenotype matrix; `-o` is the output file prefix; `-pca` is the PCA result file generated by genotype data through the command `geno –pca`. 
-### 5.Merge the phenotype values from different environment
-Phenotype data form different environment or years need to be merged before downstream analysis, commonly used phenotype data merge algorithms are mean-value, BLUP (best linear unbiased prediction) and BLUE (best linear unbiased estimation). MRBIGR provides all three methods for this purpose, which can be called and selected from parameters `–merge` and `–mm`. It is noted that only one trait is accepted in an input file. The command line is as follows:
+The subcommand `pheno` invokes the phenotype analysis module; parameter `-correct` calls the phenotype correct function; `-p` is the input phenotype matrix; `-o` is the output file prefix; `-pca` is the PCA result file generated by genotypic data through the command `geno -pca`. 
+### 2.5 Merge the phenotype values from different environment
+Phenotypic data form different environment or years need to be merged before downstream analysis, commonly used phenotypic data merge algorithms are mean-value, BLUP (best linear unbiased prediction) and BLUE (best linear unbiased estimation). MRBIGR provides all three methods for this purpose, which can be called and selected from parameters `-merge` and `-mm`. It is noted that only one trait is accepted in an input file. The command line is as follows:
 ```py
-MRBIGR.py pheno -merge -p trait1.csv -o trait1_blup -mm blup  
+docker exec -it mrbigr_env MRBIGR.py pheno -merge -p MRBIGR_data/blup_traits_final.new.csv -o blup_traits_final.blup -od MRBIGR_output/demo -mm blup 
 ```
-The subcommand `pheno` invokes the phenotype analysis module; parameter `–merge` calls the phenotype merge function; `-p` is the input phenotype matrix for a trait in CSV format;`-o` is the prefix of output file; `-mm` is the merge method. After this step, a phenotype file named <font color=blue>trait1_blup.phe.csv</font> with BLUP merged phenotypic values would be generated.
+The subcommand `pheno` invokes the phenotype analysis module; parameter `-merge` calls the phenotype merge function; `-p` is the input phenotype matrix for a trait in CSV format;`-o` is the prefix of output file; `-mm` is the merge method. After this step, a phenotype file named <font color=blue>blup_traits_final.blup.phe.csv</font> with BLUP merged phenotypic values would be generated.
 
-## GWAS and QTL related analysis
-The GWAS and QTL related analysis module can be utilized for GWAS, QTL detection and annotation, as well as peak or gene based haplotype analysis, this module can be invoked through the subcommand `gwas`, which includes 6 functions: `-gwas`, `-qtl`, `-anno`, `-visual`, `-peaktest`, and `–genetest`. `–gwas` is used to perform GWAS, `-qtl` is used to detect QTLs from GWAS results, `-anno` is used for annotation of QTL regions, `-visual` is used for the visualization of GWAS results, `-peaktest` is used for peak based haplotype test, `-genetest` is used for gene based haplotype test.
-### 1.Parallel GWAS
-MRBIGR support parallel GWAS for multiple traits. Take the processed plink-bed format genotype data and CSV format phenotype data as inputs, GWAS can be performed through the below command:
+---
+## 3. GWAS and SAL related analysis
+The GWAS and SAL related analysis module can be utilized for GWAS, SAL detection and annotation, as well as peak or gene based haplotype analysis, this module can be invoked through the subcommand `gwas`, which includes 6 functions: `-gwas`, `-qtl`, `-anno`, `-visual`, `-peaktest`, and `-genetest`. `-gwas` is used to perform GWAS, `-qtl` is used to detect SALs from GWAS results, `-anno` is used for annotation of SAL regions, `-visual` is used for the visualization of GWAS results, `-peaktest` is used for peak based haplotype test, `-genetest` is used for gene based haplotype test.
+### 3.1 Parallel GWAS
+MRBIGR support parallel GWAS for multiple traits. Take the processed plink-bed format genotypic data and CSV format phenotypic data as inputs, GWAS can be performed through the below command:
 ```py
-MRBIGR.py gwas -gwas -model lmm -thread 12 -g geno_qc -p pheno_norm.csv
+docker exec -it mrbigr_env MRBIGR.py gwas -gwas -model gemma_mlm -thread 12 -g MRBIGR_data/chr_HAMP -p MRBIGR_data/AMP_kernel_transcriptome_v4 -od MRBIGR_output/demo
 ```
-The subcommand `gwas` invokes the GWAS and QTL analysis module; parameter `–gwas` calls the GWAS function which utilizes GEMMA to perform GWAS; `-model` is the model to fit, with either linear mixed model (lmm) or linear model (lm) as option; `-thread` is the thread number to run the command; `-g` is the plink-bed format input genotype data; `-p` is the CSV format phenotype data. After this step, an output directory would be generated with the GWAS result files named <font color=blue>trait_name.assoc.txt</font> in it. 
+The subcommand `gwas` invokes the GWAS and SAL analysis module; parameter `-gwas` calls the GWAS function which utilizes GEMMA to perform GWAS; `-model` is the model to fit, with either linear mixed model (lmm) or linear model (lm) as option; `-thread` is the thread number to run the command; `-g` is the plink-bed format input genotypic data; `-p` is the CSV format phenotypic data; `-od` is the output directory. After this step, an output directory named `MRBIGR_output/demo/gwas/gemma/lmm` would be generated with the GWAS result files named <font color=blue>Zm00001dxxxxx.assoc.txt</font> in it. 
 
-### 2.Parallel QTL detection based on GWAS results
-MRBIGR introduces the clumped method implemented in PLINK v1.9 to automatically detect and optimize QTLs based on the original GWAS results. In detail, a stricter P-value threshold `–p1` is set to uncover the significantly associated SNPs; then,  for each significantly associated SNP, if the other SNPs within a 500 kb distance have P-values smaller than the second looser P-value threshold `–p2`, and have r2 values greater than 0.2 with the index SNP, as well as the number of such SNPs surpass the SNP number threshold `–p2n`, then the region is regarded as a QTL; finally, all overlapping QTLs are merged to generate the final QTL set, while the SNP with the smallest P-value in a QTL is defined as a lead SNP.The command line is as follows:
+__Note: the exact output directory is depend on the model you selected, where `-model gemma_mlm` means the final output directory will be `MRBIGR_output/demo/gwas/gemma/lmm`__.
+
+### 3.2 Parallel SAL detection based on GWAS results
+MRBIGR introduces the clumped method implemented in PLINK v1.9 to automatically detect and optimize SALs based on the original GWAS results. In detail, a stricter P-value threshold `-p1` is set to uncover the significantly associated SNPs; then,  for each significantly associated SNP, if the other SNPs within a 500 kb distance have P-values smaller than the second looser P-value threshold `-p2`, and have r2 values greater than 0.2 with the index SNP, as well as the number of such SNPs surpass the SNP number threshold `-p2n`, then the region is regarded as a SAL; finally, all overlapping SALs are merged to generate the final SAL set, while the SNP with the smallest P-value in a SAL is defined as a lead SNP.The command line is as follows:
 ```py
-MRBIGR.py gwas -qtl -g geno_qc -thread 6 -i output -o qtl_output -p1 1e-5 -p2 1e-3 -p2n 5  
+docker exec -it mrbigr_env MRBIGR.py gwas -qtl -g MRBIGR_data/chr_HAMP -thread 6 -i MRBIGR_output/demo/gwas/gemma/lmm -o qtl_output -od MRBIGR_output/demo -p1 1e-5 -p2 1e-3 -p2n 5 
 ```
-The subcommand gwas invokes the GWAS and QTL analysis module; parameter `–qtl` calls the QTL detection function; `-thread` is the thread number to run the command; `-i` is the GWAS result directory; `-o` is the output file prefix; `-p1` is the significance threshold for index SNPs used to determine QTLs; `-p2` is the secondary significance threshold for clumped SNPs used to determine the reliability of QTLs; `-p2n` is secondary significance SNP number in a QTL. After this step, an output file named <font color=blue>qtl_output.qtl_res.csv</font> would be generated.
-### 3.Annotation of QTL regions
-The QTL result file could be annotated use a four columns gene annotation file in TSV format, which looks like this:
+The subcommand gwas invokes the GWAS and SAL analysis module; parameter `-qtl` calls the SAL detection function; `-thread` is the thread number to run the command; `-i` is the GWAS result directory; `-o` is the output file prefix; `-od` is the output directory; `-p1` is the significance threshold for index SNPs used to determine SALs; `-p2` is the secondary significance threshold for clumped SNPs used to determine the reliability of SALs; `-p2n` is secondary significance SNP number in a SAL. After this step, an output file named <font color=blue>qtl_output.qtl_res.csv</font> would be generated.
+### 3.3 Annotation of SAL regions
+The SAL result file could be annotated use a four columns gene annotation file in TSV format, which looks like this:
 ```shell
-geneid  aliased position    function  
-Zm00001eb015280 Zm00001eb015280 1:52319290-52320913:+   Zm00001eb015280  
-Zm00001eb000610 Zm00001eb000610 1:2555438-2555822:+     Zm00001eb000610  
-Zm00001eb033210 Zm00001eb033210 1:184900367-184903962:+ Zm00001eb033210
+geneid  aliased position        function
+Zm00001d027230  Zm00001d027230  1:44289-49837:+ Zm00001d027230
+Zm00001d027231  Zm00001d027231  1:50877-55716:- Zm00001d027231
+Zm00001d027232  Zm00001d027232  1:92299-95134:- Zm00001d027232
+Zm00001d027233  Zm00001d027233  1:111655-118312:-       Zm00001d027233
 ```
 This file could be generated from a standard GTF format gene annotation file through the follow command:
 ```shell
-grep -v '#' input.gtf |awk '{if($3=="gene"){print $0}}' |sed 's/ /\t/g'|sed 's/"//g'|sed 's/;//g'|awk '{print $10"\t"$10"\t"$1":"$4"-"$5":"$7"\t"$10}'|sed '1igeneid\taliased\tposition\tfunction' >gene.anno.tsv
+mkdir MRBIGR_output/demo/tmp/
+grep -v '#' MRBIGR_data/Zea_mays.B73_RefGen_v4.50.gtf |awk '{if($3=="gene"){print $0}}' |sed 's/ /\t/g'|sed 's/"//g'|sed 's/;//g'|awk '{print $10"\t"$10"\t"$1":"$4"-"$5":"$7"\t"$10}'|sed '1igeneid\taliased\tposition\tfunction' > MRBIGR_output/demo/tmp/gene.anno.tsv
 ```
-Then, take this file as input, QTL annotation could be performed use follow the command:
+Then, take this file as input, SAL annotation could be performed use follow the command:
 ```py
-MRBIGR.py gwas -anno -q qtl_output.qtl_res.csv -a gene.anno.tsv -o anno_output
+docker exec -it mrbigr_env MRBIGR.py gwas -anno -q MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -a MRBIGR_output/demo/tmp/gene.anno.tsv -o anno_output -od MRBIGR_output/demo
 ```
-The subcommand `gwas` invokes the GWAS and QTL analysis module; parameter `–anno` calls the QTL annotation function; `-q` is the input QTL result file for annotation file; `-o` is the prefix of output file. After this step, an output file named <font color=blue>anno_output.qtl_anno.csv</font> would be generate.
-### 4.Visualization of GWAS results
+The subcommand `gwas` invokes the GWAS and SAL analysis module; parameter `-anno` calls the SAL annotation function; `-q` is the input SAL result file for annotation file; `-o` is the prefix of output file. After this step, an output file named <font color=blue>anno_output.qtl_anno.csv</font> would be generate.
+### 3.4 Visualization of GWAS results
 Manhattan-plots and QQ-plots can be generated for the visualization purpose of the GWAS results. The command line is as follows: 
 ```py
-MRBIGR.py gwas -visual -i output -o vis_output -thread 12  
+docker exec -it mrbigr_env MRBIGR.py gwas -visual -thread 12 -i MRBIGR_output/demo/gwas/gemma/lmm -od MRBIGR_output/demo 
 ```
 or
 ```py
-MRBIGR.py gwas -visual -i output -o vis_output -multi -q qtl_output.qtl_res.csv -thread 12
+docker exec -it mrbigr_env MRBIGR.py gwas -visual -thread 12 -i MRBIGR_output/demo/gwas/gemma/lmm -od MRBIGR_output/demo -multi -q MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv
 ```
-The subcommand `gwas` invokes the GWAS and QTL analysis module; parameter `–visual` calls the visualization function; `-i` is the GWAS result directory; `-o` is the output directory prefix; `-multi` is optional, with a multi-trait Manhattan-plot would be generate when set; `-q` is the input QTL result file, it only need to be set when `-multi` is set; `-thread` is the thread number to run the command.
-### 5.Statistical test of lead SNP
-A simple approach to establish the relationship of phenotype distribution and QTL haplotype type is to use genotype of the lead SNP to represent the haplotype type of the QTL region, then, phenotype values distribution under different genotype of the lead SNP could be displayed, and student’s test could be performed. This simple statistical test can be performed in MRBIGR through the command below:
+The subcommand `gwas` invokes the GWAS and SAL analysis module; parameter `-visual` calls the visualization function; `-i` is the GWAS result directory; `-od` is the output directory; `-multi` is optional, with a multi-trait Manhattan-plot would be generate when set; `-q` is the input SAL result file, it only need to be set when `-multi` is set; `-thread` is the thread number to run the command.
+### 3.5 Statistical test of lead SNP
+A simple approach to establish the relationship of phenotype distribution and SAL haplotype type is to use genotype of the lead SNP to represent the haplotype type of the SAL region, then, phenotype values distribution under different genotype of the lead SNP could be displayed, and student’s test could be performed. This simple statistical test can be performed in MRBIGR through the command below:
 ```py
-MRBIGR.py gwas -peaktest -o peaktest_output –p pheno.csv -g geno_output_clump -q qtl_output.qtl_res.csv  
+docker exec -it mrbigr_env MRBIGR.py gwas -peaktest -o peaktest_output -od MRBIGR_output/demo -p MRBIGR_data/AMP_kernel_transcriptome_v4 -g MRBIGR_data/chr_HAMP -q MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv  
 ```
-The subcommand `gwas` invokes the GWAS and QTL analysis module; parameter –peaktest calls the peak test function; `-o` is the directory of output files; `-p` is the input phenotype data; `-g` is the input genotype data; `-q` is the input QTL result file. Then, genotype information of each sample and phenotype distribution plot would be generated in the output directory.
-### 6.Statistical test of genes
-Another approach to establish the relationship of phenotype distribution and QTL haplotype is to test the phenotype distribution and haplotype type for each gene in the QTL, to discover potential casual gene and variants. For a QTL region, MRBIGR uses large effect variants in each gene to build gene haplotypes, and perform gene based haplotype test. Welch’s test was used for a two-group haplotype test and a Tukey’s test was used for a multiple group haplotype test as described in _Yano et al, 2016_. The command line is as follows:
+The subcommand `gwas` invokes the GWAS and SAL analysis module; parameter -peaktest calls the peak test function; `-o` is the prefix of output file; `-od` is the output directory; `-p` is the input phenotypic data; `-g` is the input genotypic data; `-q` is the input SAL result file. Then, genotype information of each sample and phenotype distribution plot would be generated in the output directory.
+### 3.6 Statistical test of genes
+Another approach to establish the relationship of phenotype distribution and SAL haplotype is to test the phenotype distribution and haplotype type for each gene in the SAL, to discover potential casual gene and variants. For a SAL region, MRBIGR uses large effect variants in each gene to build gene haplotypes, and perform gene based haplotype test. Welch’s test was used for a two-group haplotype test and a Tukey’s test was used for a multiple group haplotype test as described in _Yano et al, 2016_. The command line is as follows:
 ```py
-MRBIGR.py gwas -genetest -f1 anno_output.qtl_anno.csv -f2 testvcf_anno.ZmB73_multianno.bed -vcf test.vcf –p pheno.csv -o genetest_output  
+docker exec -it mrbigr_env MRBIGR.py gwas -genetest -f1 MRBIGR_output/demo/gwas/anno/anno_output.qtl_anno.csv -f2 MRBIGR_output/demo/geno/chr_HAMP_female.vcf_anno.ZmB73_multianno.bed -vcf MRBIGR_output/demo/geno/chr_HAMP_female.vcf.vcf -p MRBIGR_data/blup_traits_final.new.csv -od MRBIGR_output/demo
 ```
-The subcommand gwas invokes the GWAS and QTL analysis module; parameter `–genetest` calls the gene test function; `-f1` is the input QTL annotation file generated by gwas `–anno` command; `-f2` is the input genotype annotation file generated by geno `–anno` command; `-p` is the input phenotype file; `-o` is the directory of output files. Then, related gene haplotype information of each sample and phenotype distribution plot would be generated in the output directory.
+The subcommand gwas invokes the GWAS and SAL analysis module; parameter `-genetest` calls the gene test function; `-f1` is the input SAL annotation file generated by gwas `-anno` command; `-f2` is the input genotype annotation file generated by geno `-anno` command; `-p` is the input phenotype file; `-od` is the output directory. Then, related gene haplotype information of each sample and phenotype distribution plot would be generated in the `MRBIGR_output/demo/gwas/gene_haplotest` directory.
 
-## Mendelian randomization analysis of multi-omics data
+---
+## 4. Mendelian randomization analysis of multi-omics data
 The Mendelian randomization analysis module can be utilized for perform Mendelian randomization analysis between different omics data, this module can be invoked through the subcommand `mr`, which includes 3 modes according to parameters. The first mode provides input omics data through the `-exposure` and `-outcome` parameters, and performs Mendelian randomization analysis between `-exposure` data and `-outcome` data; the second mode provides transcriptome expression data through the `-gene_exp` parameter, and perform Mendelian randomization analysis between gene pairs through the `-pairwise` parameter; the third mode provides transcriptome expression data through the `-gene_exp` parameter, the `-tf` parameter provides the annotation information of the transcription factor, and `-target` provides the transcription factor target gene annotation information, and then perform Mendelian randomization analysis between transcription factors and target genes. There are two calculation models for Mendelian randomization, linear model and mixed linear model, respectively, specified by the parameters `-lm` and `-mlm`.
-### 1.Exposure/outcome Mode
+### 4.1 Exposure/outcome Mode
 The first mode uses the `-exposure` parameter to specify the exposure data required by the Mendelian randomization model, `-outcome` provides the outcome data required by the Mendelian randomization model, and `-qtl` provides the genetic variation of the exposure data, then Mendelian randomization analysis can be performed through the below command:
 ```py
-MRBIGR.py mr -g geno_qc -exposure exposure.csv -qtl exposure_qtl.csv -outcome outcome.csv -mlm -thread 12 -o mr_out  
+docker exec -it mrbigr_env MRBIGR.py mr -g MRBIGR_data/chr_HAMP -exposure MRBIGR_data/AMP_kernel_transcriptome_v4 -qtl MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -outcome MRBIGR_data/blup_traits_final.new.csv -mlm -thread 12 -o g2p -od MRBIGR_output/demo 
 ```
-The subcommand `mr` invokes the Mendelian randomization analysis module; parameter `-exposure` is the CSV format exposure data; `-outcome` is the CSV format outcome data; `-qtl` is the CSV format exposure QTL data; `-thread` is the thread number to run the command; `-g` is the plink-bed format input genotype data; `-mlm` represents perform Mendelian randomization analysis through mixed linear model; `-o` is the prefix of output file. After this step, a MR result file named <font color=blue>mr_out.MR.csv</font> would be generated.
-### 2.Pairwise Mode
+The subcommand `mr` invokes the Mendelian randomization analysis module; parameter `-exposure` is the CSV format exposure data; `-outcome` is the CSV format outcome data; `-qtl` is the CSV format exposure SAL data; `-thread` is the thread number to run the command; `-g` is the plink-bed format input genotypic data; `-mlm` represents perform Mendelian randomization analysis through mixed linear model; `-o` is the prefix of output file; `-od` is the output directory. After this step, a MR result file named <font color=blue>g2p.MR.csv</font> would be generated.
+### 4.2 Pairwise Mode
 The second mode uses the `-gene_exp` parameter to specify the population gene expression data, `-qtl` specifies the genetic variation that affects gene expression, and `-pairwise` indicates to perform Mendelian randomization analysis between all pairs of genes in the population gene expression data, pairwise genes Mendelian randomization analysis can be performed through the below command:
 ```py
-MRBIGR.py mr -g geno_qc -gene_exp gene_exp.csv -pairwise -mlm -qtl gene_qtl.csv -thread 12  -o pairwise_mr_out  
+docker exec -it mrbigr_env MRBIGR.py mr -g MRBIGR_data/chr_HAMP -gene_exp MRBIGR_data/AMP_kernel_transcriptome_v4 -pairwise -mlm -qtl MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -thread 12 -o gene_pairwise_mr_out -od MRBIGR_output/demo 
 ```
-The subcommand `mr` invokes the Mendelian randomization analysis module; parameter `-gene_exp` is the CSV format population gene expression data; `-qtl` is the CSV format gene QTL data; `-thread` is the thread number to run the command; `-g` is the plink-bed format input genotype data; `-mlm` represents perform Mendelian randomization analysis through mixed linear model; `-o` is the prefix of output file. After this step, a MR result file named <font color=blue>pairwise_mr_out.MR.csv</font> would be generated.
-### 3.TF Mode
+The subcommand `mr` invokes the Mendelian randomization analysis module; parameter `-gene_exp` is the CSV format population gene expression data; `-qtl` is the CSV format gene SAL data; `-thread` is the thread number to run the command; `-g` is the plink-bed format input genotypic data; `-mlm` represents perform Mendelian randomization analysis through mixed linear model; `-o` is the prefix of output file. After this step, a MR result file named <font color=blue>pairwise_mr_out.MR.csv</font> would be generated.
+### 4.3 TF Mode
 The third mode uses the `-gene_exp` parameter to specify the population expression data while using the `-tf` and `-target` parameters to specify the transcription factor and their target genes, respectively, and then perform Mendelian randomization analysis between the transcription factors and the target genes. The regulatory relationship between transcription factors and target genes can be divided into direct and indirect regulatory relationships. In detail, when the genomic distance between a transcription factor and its target gene is < 500 kb, the relationship between them is defined as direct relationship, while the regulatory relationship between the transcription factor and remaining target genes are defined as indirect regulation. The `-type` parameter is used to specify the regulatory relationship between transcription factors and target genes in Mendelian randomization analysis. The command line is as follows:
 ```py
-MRBIGR.py mr -g geno_qc -gene_exp gene_exp.csv -tf tf_genefunc.txt -target target_genefunc.txt -mlm -qtl tf_qtl.csv -type direct -thread 12 -o tf_mr_out  
-```
-The subcommand `mr` invokes the Mendelian randomization analysis module; parameter `-gene_exp` is the CSV format population gene expression data; `-qtl` is the CSV format transcription factor QTL data; `-tf` is the transcription factor annotation file; `-target` is the annotation files for genes targeted by transcription factors; `-thread` is the thread number to run the command; `-g` is the plink-bed format input genotype data; `-mlm` represents perform Mendelian randomization analysis through mixed linear model; `-type` is the regulatory relationship between transcription factors and target genes, with either direct (perform Mendelian randomization analysis transcription factors and directly regulated targeted genes) or all (perform Mendelian randomization analysis between transcription factors and all targeted genes) as option;`-o` is the prefix of output file. After this step, a MR result file named <font color=blue>tf_mr_out.MR.csv</font> would be generated.</br>
+head -100 MRBIGR_data/gene.anno.tsv > MRBIGR_output/demo/tmp/test_head100_genefunc.txt
+tail -100 MRBIGR_data/gene.anno.tsv > MRBIGR_output/demo/tmp/test_tail100_genefunc.txt
 
-![#5A9AB9](img/tips@3x.png)__Tips__: The transcription factor annotation file and the annotation files for genes targeted by 
-transcription factors could be annotated use a four columns gene annotation file in TSV format, 
-which looks like this:  
+docker exec -it mrbigr_env MRBIGR.py mr -g MRBIGR_data/chr_HAMP -gene_exp MRBIGR_data/AMP_kernel_transcriptome_v4 -tf MRBIGR_output/demo/tmp/test_head100_genefunc.txt -target MRBIGR_output/demo/tmp/test_tail100_genefunc.txt -mlm -qtl MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -threads 12 -o tf_test_mr_out -od MRBIGR_output/demo  
+```
+The subcommand `mr` invokes the Mendelian randomization analysis module; parameter `-gene_exp` is the CSV format population gene expression data; `-qtl` is the CSV format transcription factor SAL data; `-tf` is the transcription factor annotation file; `-target` is the annotation files for genes targeted by transcription factors; `-thread` is the thread number to run the command; `-g` is the plink-bed format input genotypic data; `-mlm` represents perform Mendelian randomization analysis through mixed linear model; `-type` is the regulatory relationship between transcription factors and target genes, with either direct (perform Mendelian randomization analysis transcription factors and directly regulated targeted genes) or all (perform Mendelian randomization analysis between transcription factors and all targeted genes) as option; `-o` is the prefix of output file; `-od` is the output directory. After this step, a MR result file named <font color=blue>tf_test_mr_out.MR.csv</font> would be generated.</br>
+
+![#5A9AB9](img/tips@3x.png)__Tips__: The transcription factor annotation file and the annotation files for genes targeted by 
+transcription factors could be annotated use a four columns gene annotation file in TSV format, 
+which looks like this (take `MRBIGR_data/gene.anno.tsv` as example):  
 ```bash
-geneid  aliased position    function  
-Zm00001eb015280 Zm00001eb015280 1:52319290-52320913:+   Zm00001eb015280  
-Zm00001eb000610 Zm00001eb000610 1:2555438-2555822:+     Zm00001eb000610  
-Zm00001eb033210 Zm00001eb033210 1:184900367-184903962:+ Zm00001eb033210  
+geneid  aliased position        function
+Zm00001d027230  Zm00001d027230  1:44289-49837:+ Zm00001d027230
+Zm00001d027231  Zm00001d027231  1:50877-55716:- Zm00001d027231
+Zm00001d027232  Zm00001d027232  1:92299-95134:- Zm00001d027232  
 ```
 
-## MR-based network construction and module identification
+---
+## 5. MR-based network construction and module identification
 In MRBIGR, the weight of MR effects between gene pairs are used to construct the MR-based network and ClusterONE algorithm is used to identify modules for the constructed network. The MR-based network analysis command line is as follows:
 ```py
-MRBIGR.py net -mr pairwise_mr_out.MR.csv -plot -o net_out  
+docker exec -it mrbigr_env MRBIGR.py net -mr MRBIGR_output/demo/mr/gene_pairwise_mr_out.MR.csv -plot -o net_out -od MRBIGR_output/demo 
 ```
-The subcommand `net` invokes the Mendelian randomization based network analysis module; parameter `-mr` is the CSV format Mendelian randomization analysis data; `-plot` represents plot network for each identified network module ;`-o` is the prefix of output file. After this step, network edgelist file <font color=blue>net_out.edge_list</font>, ClusterONE software result <font color=blue>net_out.clusterone.result.csv</font>, network module plot <font color=blue>net_out.module*.pdf</font> and final network module file <font color=blue>net_out.module.csv</font> would be generated.
-## Gene ontology analysis of network modules
+The subcommand `net` invokes the Mendelian randomization based network analysis module; parameter `-mr` is the CSV format Mendelian randomization analysis data; `-plot` represents plot network for each identified network module; `-o` is the prefix of output file; `-od` is the output directory. After this step, network edgelist file <font color=blue>net_out.edge_list</font>, ClusterONE software result <font color=blue>net_out.clusterone.result.csv</font>, network module plot <font color=blue>net_out.module*.pdf</font> and final network module file <font color=blue>net_out.module.csv</font> would be generated.
+
+---
+## 6. Gene ontology analysis of network modules
 Gene ontology analysis of the MR-based network modules is helpful to find modules with biological significance. The enrichGO function in R package clusterProfiler is used to perform GO enrichment analysis on each module based on gene ontology annotation, and rich graphics (e.g., `dotplot, barplot, cnetplot, heatplot, emapplot, upsetplot`) could be chose for the visualization of the enrichment results. The command line is as follows:
 ```py
-MRBIGR.py go -gene_lists net_out.module.csv -go_anno go_anno.txt -gene_info gene_anno.txt -plot_type barplot,dotplot -o go_out  
-```
-The subcommand `go` invokes the gene ontology enrichment analysis module; parameter `-gene_lists` is the CSV format network module data; `-go` is the Tabular format gene ontology annotation of each gene data; `-gene_info` is the Tabular format gene annotation data; `-plot_type` is visualization type of enrichment results; `-o` is the prefix of output file. After this step, gene ontology enrichment analysis <font color=blue>result go_out.GO.csv</font>, visualized results of functional enrichment results <font color=blue>go_out.BP.dotplot.pdf</font> , <font color=blue>go_out.MF.dotplot.pdf</font>  and <font color=blue>go_out.CC.dotplot.pdf</font> , <font color=blue>go_out.BP.barplot.pdf</font> , <font color=blue>go_out.MF.barplot.pdf</font>  and <font color=blue>go_out.CC.barplot.pdf</font>  would be generated.
+csvtk sep -f 3 -t MRBIGR_data/gene.anno.tsv -s ":" -n chr,start-end,strand | csvtk sep -f start-end -t -s "-" -n start,end | csvtk cut -f 1,5,8,9,7,2 -t | csvtk rename -t -f 1-6 -n "gene_id,chr,start,end,stard,annotation" -o MRBIGR_output/demo/tmp/gene_anno.txt
 
-![#5A9AB9](img/tips@3x.png)__Tips__: The gene ontology annotation information of each gene could be annotated use a two 
-columns annotation file in TSV format, which looks like this: 
-```bash
-Zm00001d018305  GO:0051649  
-Zm00001d018305  GO:0003677  
-Zm00001d003209  GO:0005886  
-Zm00001d003209  GO:0044238  
+docker exec -it mrbigr_env MRBIGR.py go -gene_lists MRBIGR_output/demo/net/net_out.module.csv -go_anno MRBIGR_data/maize.genes2go.txt -gene_info MRBIGR_output/demo/tmp/gene_anno.txt -plot_type barplot,dotplot -o go_out -od MRBIGR_output/demo  
 ```
-The gene annotation information of each gene could by annotated use a five columns annotation file 
-in TSV format, which looks like this:  
+The subcommand `go` invokes the gene ontology enrichment analysis module; parameter `-gene_lists` is the CSV format network module data; `-go` is the Tabular format gene ontology annotation of each gene data; `-gene_info` is the Tabular format gene annotation data; `-plot_type` is visualization type of enrichment results; `-o` is the prefix of output file; `-od` is the output directory. After this step, gene ontology enrichment analysis result <font color=blue>go_out.GO.csv</font>, visualized results of functional enrichment results <font color=blue>go_out.BP.dotplot.pdf</font> , <font color=blue>go_out.MF.dotplot.pdf</font> and <font color=blue>go_out.CC.dotplot.pdf</font> , <font color=blue>go_out.BP.barplot.pdf</font> , <font color=blue>go_out.MF.barplot.pdf</font> and <font color=blue>go_out.CC.barplot.pdf</font> would be generated.
+
+![#5A9AB9](img/tips@3x.png)__Tips__: The gene ontology annotation information of each gene could be annotated use a two 
+columns annotation file in TSV format, which looks like this (take `MRBIGR_data/maize.genes2go.txt` as example): 
 ```bash
-gene_id chr start   end stard   annotation  
-Zm00001d027230  1   44289   49837   +   Mitochondrial transcription termination factor family protein  
-Zm00001d027231  1   50877   55716   -   OSJNBa0093O08.6 protein  
-Zm00001d027232  1   92299   95134   -   Zm00001d027232  
-Zm00001d027234  1   118683  119739  -   Zm00001d027234 
+Zm00001d018305  GO:0051649  
+Zm00001d018305  GO:0003677  
+Zm00001d003209  GO:0005886  
+Zm00001d003209  GO:0044238  
+```
+The gene annotation information of each gene could by annotated use a five columns annotation file 
+in TSV format, which looks like this (take `MRBIGR_data/maize_genefunc.txt` as example):  
+```bash
+gene_id chr start   end stard   annotation  
+Zm00001d027230  1   44289   49837   +   Mitochondrial transcription termination factor family protein  
+Zm00001d027231  1   50877   55716   -   OSJNBa0093O08.6 protein  
+Zm00001d027232  1   92299   95134   -   Zm00001d027232  
+Zm00001d027234  1   118683  119739  -   Zm00001d027234 
 ```
 
-## Data visualization 
+---
+## 7. Data visualization 
 The data visualization module in MRBIGR provides a collection of plot functions for the visualization of genotype, phenotype, GWAS, Mendelian randomization, network, and GO analysis results. This module can be invoked through the subcommand plot. The parameter `-i` is used to specify the data file needed for plotting, `-plot_type` specifies the plot type, the options include `manhattan, qqplot, SNPdensity, hist, boxplot, scatterplot_ps, barplot, dotplot, forestplot`, and `scatterplot_mr`.
-### 1.Genotype data based plot
-The genotype data based plot includes SNP density plot (`SNPdensity`) and scatterplot of population (`scatter_ps`). SNP density plot is used to demonstrate the distribution of the SNP across the genome. The command line is as follows: 
+### 7.1 Genotypic data based plot
+The genotypic data based plot includes SNP density plot (`SNPdensity`) and scatterplot of population (`scatter_ps`). SNP density plot is used to demonstrate the distribution of the SNP across the genome. The command line is as follows: 
 ```py
-MRBIGR.py plot -i example.snp_inofo.txt -plot_type SNPdensity -o plot_out  
+csvtk cut -f 2,1,4 -t MRBIGR_data/chr_HAMP.bim -H | csvtk add-header -t -n "rs,chr,ps" -o MRBIGR_output/demo/tmp/snp_info.txt
+docker exec -it mrbigr_env MRBIGR.py plot -i MRBIGR_output/demo/tmp/snp_info.txt -plot_type SNPdensity -o plot_out -od MRBIGR_output/demo  
 ```
 
-![#5A9AB9](img/tips@3x.png)__Tips__: The SNP information file could be annotated use a three columns file in TSV format, which 
-looks like this: 
+![#5A9AB9](img/tips@3x.png)__Tips__: The SNP information file could be annotated use a three columns file in TSV format, which 
+looks like this (take generated `MRBIGR_output/demo/tmp/snp_info.txt` as example): 
 
 ```bash
-rs  chr ps  
-chr10.s_109149  10  109149  
-chr10.s_109277  10  109277  
-chr10.s_109475  10  109475  
-chr10.s_109511  10  109511  
+rs  chr ps  
+chr10.s_109149  10  109149  
+chr10.s_109277  10  109277  
+chr10.s_109475  10  109475  
+chr10.s_109511  10  109511  
 ```
 The first column represents the SNP id, the second column represents the chromosome of the SNP, and the third column represents the position of the SNP.
 The population scatterplot takes a PCA or t-SNE result file as input to visualize the population structure. The population information of each individual can be specified by the -group parameter, which is used to assign individuals to populations with different colors. The command line is as follows:
 ```py
-MRBIGR.py plot -i example.PCA.csv -plot_type scatter_ps -group example.ps_info.csv -o plot_out  
+docker exec -it mrbigr_env MRBIGR.py plot -i MRBIGR_output/demo/geno/chr_HAMP.geno_pca.csv -plot_type scatter_ps -group MRBIGR_data/491.group_info.csv -o plot_out -od MRBIGR_output/demo
 ```
-The population structure file could be annotated use a three columns file in CSV format, which looks like this:
+The population structure file could be annotated use a three columns file in CSV format, which looks like this (take `MRBIGR_output/demo/geno/chr_HAMP.geno_pca.csv` as example):
 ```bash
-RIL,PC1,PC2  
-GEMS58,38.88 ,-59.69   
-CML415,-30.07 ,1.74   
-SI273,52.52 ,11.30   
-CIMBL135,-38.45 ,9.53   
+,PC1,PC2,PC3
+CIMBL32,-500.22876280227405,291.4219232815866,-106.31967411588965
+CIMBL89,-317.01045032787937,76.23101098461999,-5.709429188066682
+CIMBL7,-438.9677175927099,147.47327899812078,17.419342974755814
+CIMBL45,168.92927463582174,142.43977568787892,137.81050851770115
+ZHENG58,687.5073243050226,-230.98495850470024,-262.2697439302226
+CML415,-296.43476541023466,8.953155752331595,1.960958532295878
+CIMBL46,-363.40800595652894,72.35692371618754,85.151195977471
+CIMBL70,-416.08725961220046,162.22519090608853,30.936760965741744
+CIMBL124,-493.08148241098274,158.7571953595056,21.30131838983761
+...
 ```
 The first column represents the sample id, the second column represents first principal component data of each inbred line, and the third column represents second principal component data of each inbred line.
-The group file could be annotated use a two columns file in CSV format, which looks like this:
+The group file could be annotated use a two columns file in CSV format, which looks like this (take `MRBIGR_data/491.group_info.csv` as example):
 ```bash
-RIL,subpop  
-GEMS58,NSS  
-CML415,TST  
-SI273,NSS  
-CIMBL135,TST  
+line,subpop
+150,Mixed
+177,Mixed
+238,NSS
+268,NSS
+501,NSS
+647,Mixed
+812,SS
+832,SS
+1323,Mixed
+...
 ```
 The first column represents the sample identifier, the second column represents the population information of each sample.
-### 2.Phenotype data based plot
-The phenotype data based plot includes histogram (`hist`) and boxplot (`boxplot`), which are used to demonstrate the distribution of phenotype data. Boxplot can not only show the overall distribution of phenotypes, but also the phenotype distribution of different groups, when the -group parameter is specified. The command line is as follows:
+### 7.2 Phenotypic data based plot
+The phenotypic data based plot includes histogram (`hist`) and boxplot (`boxplot`), which are used to demonstrate the distribution of phenotypic data. Boxplot can not only show the overall distribution of phenotypes, but also the phenotype distribution of different groups, when the -group parameter is specified. The command line is as follows:
 ```py
-MRBIGR.py plot -i example.phe.csv -plot_type hist -o plot_out  
-MRBIGR.py plot -i example.phe.csv -plot_type boxplot -group example.group.csv -o plot_out  
+csvtk cut -f 1-2 MRBIGR_data/blup_traits_final.new.csv -o MRBIGR_output/demo/tmp/example.phe.csv
+docker exec -it mrbigr_env MRBIGR.py plot -i MRBIGR_output/demo/tmp/example.phe.csv -plot_type hist -o plot_out -od MRBIGR_output/demo
+cut -f 1,12- MRBIGR_data/chr_HAMP_female.hmp| head -2 | csvtk transpose -d $'\t' -D ',' | csvtk rename -f 1 -n "line" -o MRBIGR_output/demo/tmp/example.snp_group.csv
+docker exec -it mrbigr_env MRBIGR.py plot -i MRBIGR_output/demo/tmp/example.phe.csv -plot_type boxplot -group MRBIGR_output/demo/tmp/example.snp_group.csv -o plot_out -od MRBIGR_output/demo
 ```
-The phenotype file could be annotated use a two columns file in CSV format, which looks like this:
+The phenotype file could be annotated use a two columns file in CSV format, which looks like this (take `MRBIGR_output/demo/tmp/example.phe.csv` as example):
 ```bash
-RIL,1st  
-CAU1,0.8234  
-CAU2,0.7121  
-CAU3,0.6665  
-CAU4,0.8731 
+Trait,Plantheight
+150,199.40686200000002
+177,167.7376926
+238,195.1777397
+268,160.7956655
+501,170.01783559999998
+647,143.4828657
+812,164.7820379
+1323,183.0386928
+1462,211.1751917
+...
 ```
-The first column represents the sample identifier, the second column represents the phenotype data of each sample.
-The group file could be annotated use a two columns file in CSV format, which looks like this:
+The first column represents the sample identifier, the second column represents the phenotypic data of each sample.
+The group file could be annotated use a two columns file in CSV format, which looks like the format of `MRBIGR_data/491.group_info.csv` or like this (take `MRBIGR_output/demo/tmp/example.snp_group.csv` as example):
 ```bash
-RIL,haplotype  
-CAU1,A  
-CAU2,A  
-CAU3,A  
-CAU4,T
+line,chr10.s_74401
+CIMBL32,CC
+CIMBL89,TT
+CIMBL7,CC
+CIMBL45,TT
+ZHENG58,CC
+CML415,TT
+CIMBL46,TT
+CIMBL70,TT
+CIMBL124,CC
+...
 ```
 The first column represents the sample ID, the second column represents the group of each sample, which can be haplotype type or populations information.
-### 3.GWAS based plot
+### 7.3 GWAS based plot
 The GWAS based plot includes manhattan plot (`manhattan`) and QQ plot (`qqplot`), which is used to demonstrate GWAS result. The command line is as follows:
 ```py
-MRBIGR.py plot -i example.gwas.txt -plot_type manhattan -o plot_out  
-MRBIGR.py plot -i example.gwas.txt -plot_type qqplot -o plot_out 
+docker exec -it mrbigr_env MRBIGR.py plot -i MRBIGR_output/demo/gwas/gemma/lmm/Zm00001d007718.assoc.txt -plot_type manhattan -o plot_out -od MRBIGR_output
+docker exec -it mrbigr_env MRBIGR.py plot -i MRBIGR_output/demo/gwas/gemma/lmm/Zm00001d007718.assoc.txt -plot_type qqplot -o plot_out -od MRBIGR_output
 ```
-![#5A9AB9](img/tips@3x.png)__Tips__: The GWAS result file could be annotated use a four columns file in TSV format, which looks
-like this:  
+![#5A9AB9](img/tips@3x.png)__Tips__: The GWAS result file could be annotated use a four columns file in TSV format, which looks like this:  
 ```bash
-rs  chr ps  p_wald  
-1_1922301   1   1922301 9.121183e-03  
-1_1928050   1   1928050 1.795902e-03  
-1_2521954   1   2521954 7.200593e-03  
-1_2522874   1   2522874 6.791745e-03  
+chr     rs      ps      n_miss  allele1 allele0 af      beta    se      l_remle p_wald
+10      chr10.s_74401   74401   0       T       C       0.422   -2.967759e-02   1.526325e-01    2.711385e+00    8.459573e-01
+10      chr10.s_76702   76702   0       A       G       0.390   -1.052776e-01   1.498642e-01    2.521573e+00    4.828912e-01
+10      chr10.s_92823   92823   0       T       C       0.067   -1.291505e-01   2.722853e-01    2.824265e+00    6.355980e-01
+10      chr10.s_94339   94339   0       T       A       0.517   -1.321889e-01   1.421446e-01    2.540068e+00    3.530991e-01
+10      chr10.s_94579   94579   0       G       C       0.351   -1.398295e-01   1.473273e-01    2.495780e+00    3.432887e-01
+10      chr10.s_94901   94901   0       G       A       0.141   -2.443615e-01   2.047943e-01    2.788237e+00    2.336815e-01
+...
 ```
 The first column represents the ID of SNPs, the second column represents the chromosome of SNPs, and the third column represents the position of SNPs, the fourth column represents the GWAS P-value of SNPs.
-### 4.MR data based plot
+### 7.4 MR data based plot
 The MR based plot includes forest plot (`forestplot`) and scatter plot (`scatter_mr`). The forest plot is used to display the effect between each exposure and outcome traits, and can specify the order of the outcome traits in the forest plot through the order file, so as to compare the effects of different exposures on the outcome traits. It can be used to compare the influence of different exposures under a small number of outcome traits. The command line is as follows:
 ```py
-MRBIGR.py plot -i mr_out.MR.csv -plot_type forestplot -order order.txt -o plot_out  
+csvtk cut -f 2 MRBIGR_output/demo/mr/g2p.MR.csv -U | sort -u | head -20 | csvtk grep -P - -f 2 MRBIGR_output/demo/mr/g2p.MR.csv -o MRBIGR_output/demo/tmp/example.g2p.MR.csv
+head -1 MRBIGR_data/blup_traits_final.new.csv | csvtk transpose | sed '1d' > MRBIGR_output/demo/tmp/example_trait.order.txt
+docker exec -it mrbigr_env plot -i MRBIGR_output/demo/mr/example.g2p.MR.csv -plot_type forestplot -order MRBIGR_output/demo/tmp/example_trait.order.txt -o plot_out -od MRBIGR_output/demo
 ```
-![#5A9AB9](img/tips@3x.png)__Tips__: The MR file is generated by mr subcommand. The order file is a column file that list 
-outcome traits, which looks like this: </br>
+![#5A9AB9](img/tips@3x.png)__Tips__: The MR file is generated by `mr` subcommand. The order file is a one column file that list outcome traits, which looks like this (take the traits in `MRBIGR_data/blup_traits_final.new.csv` as example): </br>
 ```bash
-Ear length  
-Ear leaf width  
-Kernel width  
-Ear diameter  
+Plantheight
+Earheight
+Earleafwidth
+Earleaflength
+Tasselmainaxislength
+Tasselbranchnumber
+Leafnumberaboveear
+Earlength
+Eardiameter
+Cobdiameter
+Kernernumberperrow
+100grainweight
+cobweight
+Kernelwidth
+Silkingtime
+Pollenshed
+Headingdate 
 ```
 The scatter plot is used to display the Mendelian randomized p-value between exposure and outcome, and group the outcome through the group file. It can be used to show the impact of exposure on the outcome traits under a large number of outcome traits. The command line is as follows:
 ```py
-MRBIGR.py plot -i mr_out.MR.csv -plot_type scatter_mr -group anno.txt -o plot_out  
+docker exec -it mrbigr_env MRBIGR.py plot -i MRBIGR_output/demo/mr/g2p.MR.csv -plot_type scatter_mr -group MRBIGR_data/genes.grp -o plot_out -od MRBIGR_output/demo
 ```
 
-![#5A9AB9](img/tips@3x.png)__Tips__: The group file of outcome traits could be annotated use a two columns annotation file in 
-CSV format, which looks like this:  
+![#5A9AB9](img/tips@3x.png)__Tips__: The group file of outcome traits could be annotated use a two columns annotation file in CSV format, which looks like this (take `MRBIGR_data/genes.grp` as example):  
 ```bash
-id,group  
-Zm00001d028748,1  
-Zm00001d025572,10  
-Zm00001d005932,2  
-Zm00001d042777,3  
+id,group
+Zm00001d027230,1
+Zm00001d027231,1
+Zm00001d027232,1
+Zm00001d027233,1
+Zm00001d027234,1 
+...
 ```
 The first column represents the outcome trait, and the second column represents the category corresponding to the outcome trait, which can be the chromosome where the gene is located, the type of metabolite, etc.
-### 5.GO based plot
+### 7.5 GO based plot
 The GO based plot includes bar plot (`barplot`) and dot plot (`dotplot`). It depicts the enrichment scores (e.g. P-values) and gene count or ratio in plot. The command line is as follows:
 ```py
-MRBIGR.py plot -i example.GO.csv -plot_type barplot -o plot_out  
-MRBIGR.py plot -i example.GO.csv -plot_type dotplot -o plot_out 
+docker exec -it mrbigr_env plot -i MRBIGR_output/demo/go/go_out.GO.csv -plot_type barplot -o plot_out -od MRBIGR_output/demo
+docker exec -it mrbigr_env plot -i MRBIGR_output/demo/go/go_out.GO.csv -plot_type dotplot -o plot_out -od MRBIGR_output/demo
 ```
 
-![#5A9AB9](img/tips@3x.png)__Tips__:The GO enrichment result file could be annotated use a ten columns file in CSV format,
-which looks like this:  
+![#5A9AB9](img/tips@3x.png)__Tips__:The GO enrichment result file could be annotated use a ten columns file in CSV format,
+which looks like this:  
 ```bash
-ONTOLOGY,ID,Description,GeneRatio,BgRatio,pvalue,p.adjust,qvalue,geneID,Count  
-MF,GO:0003729,mRNA binding,5/82,371/37229, 1.393e-3,0.033,0.026,Zm00001d044979/Zm00001d049442/Zm00001d005350,5 
+ONTOLOGY,ID,Description,GeneRatio,BgRatio,pvalue,p.adjust,qvalue,geneID,Count  
+MF,GO:0003729,mRNA binding,5/82,371/37229,1.393e-3,0.033,0.026,Zm00001d044979/Zm00001d049442/Zm00001d005350,5 
+...
 ```
 The first column represents the ontology domains, including BP, MF and CC, the second column represents the ontology id, the third column represents the description of ontology id, the fourth column represents the ratio of genes containing ontology id in the gene list to the total genes in the gene list, the fifth column represents the ratio of genes containing ontology id in whole genome to the total genes in whole genome, the sixth column represents the P value of GO enrichment analysis, the seventh and eighth columns represents the corrected P value of GO enrichment analysis, it can be same when the GO enrichment result file is user-customized, the ninth column represents the gene id of genes containing ontology id, the tenth represents the count of genes containing ontology id.
