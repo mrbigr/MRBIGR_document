@@ -25,7 +25,7 @@ docker run -dit --name mrbigr_env -p 3838:3838 \
     mrbigr_image:latest
 ```
 
-If no exception is thrown out, please enter the `http://localhost:3838` in the browser and then you will see the following interface:
+If no exception is thrown out, please enter the `http://localhost:3838` in the browser and then you will see the following GUI:
 ![MRBIGR GUI](img/MRBIGR_GUI_portal.jpg)
 
 ![#5A9AB9](img/tips@3x.png) __Note__: If you encounter the issue like below:
@@ -65,8 +65,7 @@ docker run -dit --name mrbigr_env -p 3838:3838 \
     -e SHINY_ROOT_PATH=/root/MRBIGR \
     mrbigr_image:latest
 ```
-### 1.3 Installation directly using conda (but we don't test it)
-
+### 1.3 Installation using conda
 #### 1.3.1 Build and install
 ```bash
 conda create -n mrbigr python=3.7 -y
@@ -115,13 +114,13 @@ mkdir MRBIGR_output/demo
 
 <h3 id="genotypic_data"> 2.1 Genotypic data</h3>
 
-MRBIGR uses PLINK-bed file format for Genotypic data by default (details see [http://zzz.bwh.harvard.edu/plink/data.shtml#bed](http://zzz.bwh.harvard.edu/plink/data.shtml#bed)). The built-in _`geno`_ module supports converting <a href="#hapmap_format">HapMap</a> or <a href="#vcf_format">VCF</a> formatted genotype files to PLINK-bed format, as well as converting PLINK-bed format to VCF format.
+MRBIGR uses PLINK-bed file format for Genotypic data by default (details see [http://zzz.bwh.harvard.edu/plink/data.shtml#bed](http://zzz.bwh.harvard.edu/plink/data.shtml#bed)). The built-in `geno` module supports converting <a href="#hapmap_format">HapMap</a> or <a href="#vcf_format">VCF</a> formatted genotype files to PLINK-bed format, as well as converting PLINK-bed format to VCF format.
 
 <h4 id="hapmap_format">2.1.1 HapMap file format</h4>
 
 Hapmap is a commonly used format for storing sequence data where SNP information is stored in the rows and taxa information is stored in the columns. This format allows the SNP information (chromosome and position) and genotypes of each taxa to be stored in a single file.
 
-The first 11 columns display attributes of the SNPs and the remaining columns show the nucleotides observed at each SNP for each taxa. The first row contains the header labels and each remaining row contains all the information for a single SNP. The first nine SNPs from the tutorial data (MRBIGR_data/chr_HAMP_female.hmp) are presented below.
+The first 11 columns display attributes of the SNPs and the remaining columns show the nucleotides observed at each SNP for each taxa. The first row contains the header labels and each remaining row contains all the information for a single SNP. The first nine SNPs from the tutorial data (`MRBIGR_data/chr_HAMP_female.hmp`) are presented below.
 
 |rs#           |alleles|chrom|posi  |strand|assembly|center|protLSID|assayLSID|panelLSID|QCdode|CIMBL32|CIMBL89|CIMBL7|CIMBL45|ZHENG58|...|CIMBL46|
 |:-------------|:------|:----|:-----|:-----|:-------|:-----|:-------|:--------|:--------|:-----|:------|:------|:-----|:------|:------|:-----|:------|
@@ -139,7 +138,7 @@ The first 11 columns display attributes of the SNPs and the remaining columns sh
 
 VCF (Variant Call Format) file is a standard text file format for storing genomic variation information. This format is widely used in genomic research, especially when it comes to the difference between the genome sequence of an individual or a population and the reference genome. VCF files can describe multiple types of genetic variations, such as single nucleotide polymorphisms (SNPs), insertions/deletions (InDels), structural variations, etc.
 
-The basic structure of a VCF file consists of two parts: header information and data lines. The header information starts with ## and contains the file's metadata such as format version, generation program, etc., and defines the column name with the #CHROM line; the data part lists the information of each variant site in detail, including chromosome number, position, identifier, reference and alternative bases, quality score, filtering status, additional information and sample-specific data. The first five SNPs from the converted data (MRBIGR_output/demo/geno/chr_HAMP_female.vcf.vcf) are presented below.
+The basic structure of a VCF file consists of two parts: header information and data lines. The header information starts with ## and contains the file's metadata such as format version, generation program, etc., and defines the column name with the #CHROM line; the data part lists the information of each variant site in detail, including chromosome number, position, identifier, reference and alternative bases, quality score, filtering status, additional information and sample-specific data. The first five SNPs from the converted data (`MRBIGR_output/demo/geno/chr_HAMP_female.vcf.vcf`) are presented below.
 ```bash
 ##fileformat=VCFv4.2
 ##fileDate=20241004
@@ -170,7 +169,7 @@ Phenotypic file includes multiple phenotype columns. Taxa names should be in the
 
 #### 2.2.1 Trait file 
 
-The first nine observations in the tutorial data (MRBIGR_data/blup_traits_final.new.csv) are displayed as follows:
+The first nine observations in the tutorial data (`MRBIGR_data/blup_traits_final.new.csv`) are displayed as follows:
 
 |Trait|Plantheight       |Earheight        |Earleafwidth      |Earleaflength    |Tasselmainaxislength|Tasselbranchnumber|Leafnumberaboveear|Earlength         |Eardiameter       |Cobdiameter       |Kernernumberperrow|100grainweight    |cobweight        |Kernelwidth       |Silkingtime|Pollenshed       |Headingdate|
 |:----|:-----------------|:----------------|:-----------------|:----------------|:-------------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:----------------|:-----------------|:----------|:----------------|:----------|
@@ -186,7 +185,7 @@ The first nine observations in the tutorial data (MRBIGR_data/blup_traits_final.
 
 #### 2.2.2 Gene expression file 
 
-The first nine observations in the tutorial data (MRBIGR_data/AMP_kernel_transcriptome_v4_FPKM) are displayed as follows:
+The first nine observations in the tutorial data (`MRBIGR_data/AMP_kernel_transcriptome_v4_FPKM`) are displayed as follows:
 
 |       |Zm00001d007718     |Zm00001d007716|Zm00001d018986    |Zm00001d048402     |Zm00001d048403   |Zm00001d048404    |Zm00001d048407    |Zm00001d048342     |Zm00001d048393    |Zm00001d048394|
 |:------|:------------------|:-------------|:-----------------|:------------------|:----------------|:-----------------|:-----------------|:------------------|:-----------------|:-------------|
@@ -202,7 +201,7 @@ The first nine observations in the tutorial data (MRBIGR_data/AMP_kernel_transcr
 
 #### 2.2.3 Metabolite abundance file
 
-The first nine observations in the tutorial data (MRBIGR_data/E3_log2.normalized_phe.csv) are displayed as follows:
+The first nine observations in the tutorial data (`MRBIGR_data/E3_log2.normalized_phe.csv`) are displayed as follows:
 
 |ID  |n0004             |n0006             |n0012             |n0014             |n0016             |n0019             |n0020             |n0025             |n0029             |n0033             |
 |:---|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
@@ -218,39 +217,47 @@ The first nine observations in the tutorial data (MRBIGR_data/E3_log2.normalized
 
 ___
 ## 3. Quick start of MRBIGR (command line based)
-MRBIGR consists of seven analysis modules: genotype based analysis module `geno`, phenotype based analysis module `pheno`, GWAS and SAL related analysis module `gwas`, Mendelian randomization ralated  analysis （three module：Mendelian randomization analysis module `mr`, MR-based network construction module `net` and gene ontology analysis module `go`） and data visulaization module `plot`. Each module can be invoked via a subcommand, and each module also provides several functions which can be called with corresponding parameters. In this part, only several commonly used functions in each module are shown as examples. For more detailed instructions or GUI operation, please refer to the [Tutorial section](Tutorial.md).
+MRBIGR consists of seven analysis modules: genotype based analysis module `geno`, phenotype based analysis module `pheno`, GWAS and SAL related analysis module `gwas`, Mendelian randomization ralated  analysis （three module：Mendelian randomization analysis module `mr`, MR-based network construction module `net` and gene ontology analysis module `go`） and data visulaization module `plot`. Each module can be invoked via a subcommand, and each module also provides several functions which can be called with corresponding parameters. 
+
+In this part, only several commonly used functions in each module are shown as examples. For more detailed instructions or GUI operation, please refer to the [Tutorial section](Tutorial.md).
+
 ### 3.1 Genotypic data process
-If you hava downloaded [MRBIGR_data](https://zenodo.org/records/13955396/files/MRBIGR_data.20241019.tar.gz) and unpacked it, you will see a set of plink-bed format genotypic data named <font color=blue>chr_HAMP.bed/chr_HAMP.bim/chr_HAMP.fam</font>. First, quality control of the original genotypic data should be performed through the below command:
+If you hava downloaded [MRBIGR_data](https://zenodo.org/records/13955396/files/MRBIGR_data.20241019.tar.gz) and unpacked it, you will see a set of plink-bed format genotypic data named <font color=blue>chr_HAMP.bed/chr_HAMP.bim/chr_HAMP.fam</font>. 
+
+First, quality control of the original genotypic data should be performed through the below command:
 ```bash
 docker exec -it mrbigr_env MRBIGR.py geno -qc -g chr_HAMP -o geno_qc -od MRBIGR_output/demo -maf 0.05 -mis 0.2 -mind 0.2  
 ```
-The subcommand `geno` invokes the genotype analysis module; parameter `-qc` calls the quality control function; `-g` is the prefix of plink-bed format input genotypic data; `-o` is the output genotypic data prefix; `-od` is the output directory; `-maf` is the MAF for a SNP to be kept; `-mis` is the maximum proportion of missing values for a SNP to be kept; `-mind` is the maximum proportion of missing values for a sample to be kept. ![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/geno` directory__.
-<br/>
+The subcommand `geno` invokes the genotype analysis module; parameter `-qc` calls the quality control function; `-g` is the prefix of plink-bed format input genotypic data; `-o` is the output genotypic data prefix; `-od` is the output directory; `-maf` is the MAF for a SNP to be kept; `-mis` is the maximum proportion of missing values for a SNP to be kept; `-mind` is the maximum proportion of missing values for a sample to be kept. After this step, the QC-filtered genotypic data <font color=blue>geno_qc.bed/geno_qc.bim/geno_qc.fam</font> would be generated. 
 
-After this step, the QC-filtered genotypic data <font color=blue>geno_qc.bed/geno_qc.bim/geno_qc.fam</font> would be generated. Then, dimensionality reduction of the original genotypic data could be performed using the below command:
+Then, dimensionality reduction of the original genotypic data could be performed using the below command:
 ```bash
 docker exec -it mrbigr_env MRBIGR.py geno -clump -g MRBIGR_output/demo/geno/geno_qc -o geno -od MRBIGR_output/demo
 ```
-The subcommand geno invokes the genotype analysis module; parameter `-clump` calls the genotype clumping function to keep only one representative SNP per region of LD; `-g` is the prefix of plink-bed format input genotypic data; `-o` is the output genotypic data prefix (`suffix _clump` will be added automatically for the output files); `-od` is the output directory. After this step, the clumped genotypic data <font color=blue>geno_clump.bed/geno_clump.bim/geno_clump.fam</font> would be generated. Then, take the dimensional reduced genotypic data as input to perform principal component analysis using the below command:
+The subcommand geno invokes the genotype analysis module; parameter `-clump` calls the genotype clumping function to keep only one representative SNP per region of LD; `-g` is the prefix of plink-bed format input genotypic data; `-o` is the output genotypic data prefix (`suffix _clump` will be added automatically for the output files); `-od` is the output directory. After this step, the clumped genotypic data <font color=blue>geno_clump.bed/geno_clump.bim/geno_clump.fam</font> would be generated. 
+
+Last, take the dimensional reduced genotypic data as input to perform principal component analysis using the below command:
 ```bash
 docker exec -it mrbigr_env MRBIGR.py geno -pca -g MRBIGR_output/demo/geno/geno_clump -o geno -od MRBIGR_output/demo 
 ```
-The subcommand `geno` invokes the genotype analysis module; parameter `-pca` calls the principal component analysis function; `-g` is the prefix of the plink-bed format input Genotypic data; `-o` is the output Genotypic data prefix (`suffix_pca` will be added automatically for the output files); `-od` is the output directory. After this step, an output file named <font color=blue>geno_pca.csv</font> would be generated.
+The subcommand `geno` invokes the genotype analysis module; parameter `-pca` calls the principal component analysis function; `-g` is the prefix of the plink-bed format input genotypic data; `-o` is the output genotypic data prefix (a suffix `_pca` will be added automatically for the output files); `-od` is the output directory. After this step, an output file named <font color=blue>geno_pca.csv</font> would be generated.
+
+![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/geno` directory__.
 
 ### 3.2 Phenotypic data process
 For the example CSV format phenotype file named <font color=blue>blup_traits_final.new.csv</font> in MRBIGR_data, the quality control of the original phenotypic data should be performed through the below command:
 ```bash
 docker exec -it mrbigr_env MRBIGR.py pheno -qc -p blup_traits_final.new.csv -o blup_traits_final_qc -od MRBIGR_output/demo -mis 0.5 -val 0.1 -rout zscore
 ```
-The subcommand `pheno` invokes the phenotype analysis module; parameter `-qc` calls the quality control function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-od` is the output directory; `-mis` is the missing rate cutoff; `-val` is the small value cutoff; `-rout` means outlier removal of phenotypic values with the default method. After this step, a QC-filtered Phenotypic data named <font color=blue>blup_traits_final_qc.phe.csv</font> would be generated. ![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/pheno` directory__.
+The subcommand `pheno` invokes the phenotype analysis module; parameter `-qc` calls the quality control function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-od` is the output directory; `-mis` is the missing rate cutoff; `-val` is the small value cutoff; `-rout` means outlier removal of phenotypic values with the default method. After this step, a QC-filtered Phenotypic data named <font color=blue>blup_traits_final_qc.phe.csv</font> would be generated. 
 
 Then, take this file as input, perform missing phenotypic value imputation through the below command: 
 ```bash
 docker exec -it mrbigr_env MRBIGR.py pheno -imput -p MRBIGR_output/demo/pheno/blup_traits_final_qc.phe.csv -o blup_traits_final_qc_imput -od MRBIGR_output/demo
 ```
-The subcommand `pheno` invokes the phenotype analysis module; parameter `-imput` calls the phenotype imputation function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-od` is the output directory. 
+The subcommand `pheno` invokes the phenotype analysis module; parameter `-imput` calls the phenotype imputation function; `-p` is the input phenotype matrix; `-o` is the prefix of output file; `-od` is the output directory. After this step, a phenotype file named <font color=blue>blup_traits_final_qc_imput.phe.csv</font> with no `NA` value would be generated. 
 
-After this step, a phenotype file named <font color=blue>blup_traits_final_qc_imput.phe.csv</font> with no `NA` value would be generated. Then, take this file as input to perform phenotypic value normalization using the below command:
+Last, take this file as input to perform phenotypic value normalization using the below command:
 ```bash
 docker exec -it mrbigr_env MRBIGR.py pheno -scale -p MRBIGR_output/demo/pheno/blup_traits_final_qc_imput.phe.csv -o blup_traits_final_qc_imput_norm -od MRBIGR_output/demo -boxcox -minmax  
 ```
@@ -262,12 +269,16 @@ docker exec -it mrbigr_env MRBIGR.py pheno -merge -p MRBIGR_data/blup_traits_fin
 ```
 The subcommand `pheno` invokes the phenotype analysis module; parameter `-merge` calls the phenotype merge function; `-p` is the input phenotype matrix for a trait in CSV format; `-o` is the prefix of output file; `-od` is the output directory; `-mm` is the merge method. After this step, a phenotype file named `blup_traits_final.blup.phe.csv` with BLUP merged phenotypic values would be generated.
 
+![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/pheno` directory__.
+
 ### 3.3 GWAS and SAL detection
 Take the plink-bed format genotypic data and CSV format phenotypic data as inputs, GWAS can be performed through the below command:
 ```bash
 docker exec -it mrbigr_env MRBIGR.py gwas -gwas -model gemma_mlm -thread 12 -g MRBIGR_data/chr_HAMP -p MRBIGR_data/AMP_kernel_transcriptome_v4 -od MRBIGR_output/demo  
 ```
-The subcommand `gwas` invokes the GWAS and SAL analysis module; parameter `-gwas` calls the GWAS function; `-model` is the model to fit, with linear mixed model (lmm) in `gemma` by default; `-thread` is the thread number to run the command; `-g` is the plink-bed format input Genotypic data; `-p` is the CSV format phenotypic data; `-od` is the output directory. After this step, an output directory named `MRBIGR_output/demo/gwas/gemma/lmm` would be generated with the GWAS result files named <font color=blue>Zm00001dxxxxx.assoc.txt</font> in it. ![#5A9AB9](img/tips@3x.png) __Note: the exact output directory is depend on the model you selected, where `-model gemma_mlm` means the final output directory will be `MRBIGR_output/demo/gwas/gemma/lmm`__.
+The subcommand `gwas` invokes the GWAS and SAL analysis module; parameter `-gwas` calls the GWAS function; `-model` is the model to fit, with linear mixed model (lmm) in `gemma` by default; `-thread` is the thread number to run the command; `-g` is the plink-bed format input Genotypic data; `-p` is the CSV format phenotypic data; `-od` is the output directory. After this step, an output directory named `MRBIGR_output/demo/gwas/gemma/lmm` would be generated with the GWAS result files named <font color=blue>Zm00001dxxxxx.assoc.txt</font> in it. 
+
+![#5A9AB9](img/tips@3x.png) __Note: the exact output directory is depend on the model you selected, where `-model gemma_mlm` means the final output directory will be `MRBIGR_output/demo/gwas/gemma/lmm`__.
 
 Then, SAL can be determined using the below command based on the GWAS results:
 ```bash
@@ -286,7 +297,7 @@ Take the plink-bed format genotypic data, CSV format exposure data, CSV format e
 ```bash
 docker exec -it mrbigr_env MRBIGR.py mr -g MRBIGR_data/chr_HAMP -exposure MRBIGR_data/AMP_kernel_transcriptome_v4 -qtl MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -outcome MRBIGR_data/blup_traits_final.new.csv -mlm -thread 12 -o g2p -od MRBIGR_output/demo 
 ```
-The subcommand `mr` invokes the MR analysis module; parameter -exposure is the CSV format exposure data; -outcome is the CSV format outcome data; `-qtl` is the CSV format exposure SAL data; `-thread` is the thread number to run the command; `-g` is the plink-bed format input Genotypic data; `-mlm` represents perform MR analysis through mixed linear model; `-o` is the prefix of output file; `-od` is the output directory. After this step, a MR result file named <font color=blue>g2p.MR.csv</font> would be generated. ![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/mr` directory__.
+The subcommand `mr` invokes the MR analysis module; parameter -exposure is the CSV format exposure data; -outcome is the CSV format outcome data; `-qtl` is the CSV format exposure SAL data; `-thread` is the thread number to run the command; `-g` is the plink-bed format input Genotypic data; `-mlm` represents perform MR analysis through mixed linear model; `-o` is the prefix of output file; `-od` is the output directory. After this step, a MR result file named <font color=blue>g2p.MR.csv</font> would be generated. 
 
 It also can take the CSV format population gene expression data and CSV format gene SAL data as inputs, pairwise genes MR analysis can be performed through the below command:
 ```bash
@@ -296,26 +307,32 @@ The subcommand `mr` invokes the MR analysis module; parameter `-gene_exp` is the
 
 If you want to perform MR analysis between transcription factor and genes it targets, the below command should be helpful:
 ```bash
-head -100 MRBIGR_data/gene.anno.tsv > MRBIGR_output/demo/test_head100_genefunc.txt
-tail -100 MRBIGR_data/gene.anno.tsv > MRBIGR_output/demo/test_tail100_genefunc.txt
+mkdir MRBIGR_output/demo/tmp/
+head -100 MRBIGR_data/gene.anno.tsv > MRBIGR_output/demo/tmp/test_head100_genefunc.txt
+tail -100 MRBIGR_data/gene.anno.tsv > MRBIGR_output/demo/tmp/test_tail100_genefunc.txt
 
-docker exec -it mrbigr_env MRBIGR.py mr -g MRBIGR_data/chr_HAMP -gene_exp MRBIGR_data/AMP_kernel_transcriptome_v4 -tf MRBIGR_output/demo/test_head100_genefunc.txt -target MRBIGR_output/demo/test_tail100_genefunc.txt -mlm -qtl MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -threads 12 -o tf_test_mr_out -od MRBIGR_output/demo
+docker exec -it mrbigr_env MRBIGR.py mr -g MRBIGR_data/chr_HAMP -gene_exp MRBIGR_data/AMP_kernel_transcriptome_v4 -tf MRBIGR_output/demo/tmp/test_head100_genefunc.txt -target MRBIGR_output/demo/tmp/test_tail100_genefunc.txt -mlm -qtl MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -threads 12 -o tf_test_mr_out -od MRBIGR_output/demo
 ```
 The subcommand `mr` invokes the MR analysis module; parameter `-gene_exp` is the CSV format population gene expression data; `-qtl` is the CSV format transcription factor SAL data; `-tf` is the transcription factor annotation file; `-target` is the annotation files for genes targeted by transcription factors; `-thread` is the thread number to run the command; `-g` is the plink-bed format input Genotypic data; `-mlm` represents perform MR analysis through mixed linear model; `-o` is the prefix of output file; `-od` is the output directory. After this step, a MR result file named <font color=blue>tf_test_mr_out.MR.csv</font> would be generated.
+
+![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/mr` directory__.
 
 ### 3.5 MR-based network construction
 Take the CSV format MR analysis data as input, MR based network analysis can be performed through the below command:
 ```bash
 docker exec -it mrbigr_env MRBIGR.py net -mr MRBIGR_output/demo/mr/gene_pairwise_mr_out.MR.csv -plot -o net_out -od MRBIGR_output/demo
 ```
-The subcommand `net` invokes the MR based network analysis module; parameter `-mr` is the CSV format MR analysis data; `-plot` represents plot network for each identified network module; `-o` is the prefix of output file; `-od` is the output directory. After this step, network edgelist file <font color=blue>net_out.edge_list</font>, ClusterONE software result <font color=blue>net_out.clusterone.result.csv</font>, network module plot <font color=blue>net_out.module*.pdf</font> and final network module file <font color=blue>net_out.module.csv</font> would be generated. ![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/net` directory__.
+The subcommand `net` invokes the MR based network analysis module; parameter `-mr` is the CSV format MR analysis data; `-plot` represents plot network for each identified network module; `-o` is the prefix of output file; `-od` is the output directory. After this step, network edgelist file <font color=blue>net_out.edge_list</font>, ClusterONE software result <font color=blue>net_out.clusterone.result.csv</font>, network module plot <font color=blue>net_out.module*.pdf</font> and final network module file <font color=blue>net_out.module.csv</font> would be generated. 
+
+![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/net` directory__.
 
 ### 3.6 Gene ontology analysis of network modules
 Take the CSV format network module data, Tabular format gene ontology annotation of each gene data and Tabular format gene annotation data as inputs, gene ontology enrichment analysis of each module can be performed through the below command:
 ```bash
-mkdir MRBIGR_output/demo/tmp/
 csvtk sep -f 3 -t MRBIGR_data/gene.anno.tsv -s ":" -n chr,start-end,strand | csvtk sep -f start-end -t -s "-" -n start,end | csvtk cut -f 1,5,8,9,7,2 -t | csvtk rename -t -f 1-6 -n "gene_id,chr,start,end,stard,annotation" -o MRBIGR_output/demo/tmp/gene_anno.txt
 
 docker exec -it mrbigr_env MRBIGR.py go -gene_lists MRBIGR_output/demo/net/net_out.module.csv -go_anno MRBIGR_data/maize.genes2go.txt -gene_info MRBIGR_output/demo/tmp/gene_anno.txt -o go_out -od MRBIGR_output/demo
 ```
-The subcommand `go` invokes the gene ontology enrichment analysis module; parameter `-gene_lists` is the CSV format network module data; `-go_anno` is the tabular format gene ontology annotation of each gene data; `-gene_info` is the tabular format gene annotation data; `-o` is the prefix of output file; `-od` is the output directory. After this step, gene ontology enrichment analysis result <font color=blue>go_out.GO.csv</font>, visualized results of functional enrichment results <font color=blue>go_out.BP.dotplot.pdf</font>, <font color=blue>go_out.MF.dotplot.pdf</font> and <font color=blue>go_out.CC.dotplot.pdf</font> would be generated. ![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/go` directory__.
+The subcommand `go` invokes the gene ontology enrichment analysis module; parameter `-gene_lists` is the CSV format network module data; `-go_anno` is the tabular format gene ontology annotation of each gene data; `-gene_info` is the tabular format gene annotation data; `-o` is the prefix of output file; `-od` is the output directory. After this step, gene ontology enrichment analysis result <font color=blue>go_out.GO.csv</font>, visualized results of functional enrichment results <font color=blue>go_out.BP.dotplot.pdf</font>, <font color=blue>go_out.MF.dotplot.pdf</font> and <font color=blue>go_out.CC.dotplot.pdf</font> would be generated. 
+
+![#5A9AB9](img/tips@3x.png) __Note: the all output will generated in `MRBIGR_output/demo/go` directory__.

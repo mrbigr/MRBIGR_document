@@ -11,13 +11,13 @@ __MRBIGR__ (**M**endelian **R**andomization-**B**ased **I**nference of **G**enet
 * [GWAS & SAL analysis](Tutorial.md#3-gwas-and-sal-related-analysis) for the module of GWAS and SAL related analysis.<br/>
 * [Mendelian randomization analysis](Tutorial.md#4-mendelian-randomization-analysis-of-multi-omics-data) for the module of Mendelian randomization analysis of multi-omics data.<br/>
 * [MR-based network analysis](Tutorial.md#5-mr-based-network-construction-and-module-identification) for the module of MR-based network construction and module identification.</br>
-* [Gene ontology analysis](Tutorial.md#6-gene-ontology-analysis-of-network-modules) for the module of Gene ontology analysis of network.
-* [Data visualization](Tutorial.md#7-data-visualization) for the module of training dataset refinement and design.<br/>
+* [Gene ontology analysis](Tutorial.md#6-gene-ontology-analysis-of-network-modules) for the module of gene ontology analysis.
+* [Data visualization](Tutorial.md#7-data-visualization) for the module of data visualization.<br/>
 
 **Gitee**: [MRBIGR](https://gitee.com/crazyhsu/MRBIGR)
 
 **QuickStart**: [MRBIGR QuickStart](QuickStart.md)
 
-**Contact us**: xufeng9527@cau.edu.cn
+**Contact us**: Feng Xu (xufeng9527(at)cau.edu.cn).
 
 **Note**: Academic users can used for free directly and please contact us for commercial use.
