@@ -53,7 +53,11 @@ Please try the following code:
 ```bash
 cd MRBIGR
 docker pull crazyhsu/mrbigr_env:v1.2  # direct pull the images without authorize
+# or
+wget https://zenodo.org/records/13955396/files/mrbigr_env_v1.2.tar
+docker load -i mrbigr_env_v1.2.tar
 docker build -t mrbigr_image .
+
 curr_dir=$(pwd)
 docker run -dit --name mrbigr_env -p 3838:3838 \
     -v $curr_dir/MRBIGR_data:/root/MRBIGR/MRBIGR_data \
