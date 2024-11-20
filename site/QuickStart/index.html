@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Qian Cheng" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>QuickStart - MRBIGR</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "QuickStart";
+        var mkdocs_page_input_path = "QuickStart.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> MRBIGR
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">QuickStart</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-installation-of-mrbigr">1. Installation of MRBIGR</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#11-download-mrbigr">1.1 Download MRBIGR</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#12-installation-using-docker-recommended">1.2 Installation using docker (recommended)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#13-installation-using-conda">1.3 Installation using conda</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#131-build-and-install">1.3.1 Build and install</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#132-install-dependencies">1.3.2 Install dependencies</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#133-install-dependencies">1.3.3. Install dependencies</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#134-set-environment-variables">1.3.4 Set environment variables</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#135-set-up-mrbigr-gui-app">1.3.5 Set up MRBIGR GUI app</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-data-preparation">2. Data preparation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#221-trait-file">2.2.1 Trait file</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#222-gene-expression-file">2.2.2 Gene expression file</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#223-metabolite-abundance-file">2.2.3 Metabolite abundance file</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-quick-start-of-mrbigr-command-line-based">3. Quick start of MRBIGR (command line based)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#31-genotypic-data-process">3.1 Genotypic data process</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#32-phenotypic-data-process">3.2 Phenotypic data process</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#33-gwas-and-sal-detection">3.3 GWAS and SAL detection</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#34-mendelian-randomization-mr-related-analysis">3.4 Mendelian randomization (MR) related analysis</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#35-mr-based-network-construction">3.5 MR-based network construction</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#36-gene-ontology-analysis-of-network-modules">3.6 Gene ontology analysis of network modules</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Tutorial/">Tutorial</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">MRBIGR</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">QuickStart</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/CrazyHsu/MRBIGR/edit/master/docs/QuickStart.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="quickstart"><center>Quickstart</center></h1>
+<p><center>Installation and quickstart</center></p>
+<hr />
+<p>This section is mainly intended for the installation of MRBIGR and the briefly introduction of several typical usage of MRBIGR to help users get started quickly. Details and advanced usage of MRBIGR, please see <a href="../Tutorial/">Tutorial section</a>.</p>
+<hr />
+<h2 id="1-installation-of-mrbigr">1. Installation of MRBIGR</h2>
+<h3 id="11-download-mrbigr">1.1 Download MRBIGR</h3>
+<pre><code class="language-bash">git clone https://gitee.com/crazyhsu/MRBIGR.git
+</code></pre>
+<h3 id="12-installation-using-docker-recommended">1.2 Installation using <a href="https://docs.docker.com/engine/install/">docker</a> (recommended)</h3>
+<pre><code class="language-bash">cd MRBIGR
+docker build -t mrbigr_image .
+curr_dir=$(pwd)
+docker run -dit --name mrbigr_env -p 3838:3838 \
+    -v $curr_dir/MRBIGR_data:/root/MRBIGR/MRBIGR_data \
+    -v $curr_dir/MRBIGR_output/demo:/root/MRBIGR/MRBIGR_output/demo \
+    -v $curr_dir/MRBIGR_log:/root/MRBIGR/MRBIGR_log \
+    -e SHINY_INPUT_PATH=/root/MRBIGR/MRBIGR_data \
+    -e SHINY_OUTPUT_PATH=/root/MRBIGR/MRBIGR_output/demo \
+    -e SHINY_LOG_PATH=/root/MRBIGR/MRBIGR_log \
+    -e SHINY_ROOT_PATH=/root/MRBIGR \
+    mrbigr_image:latest
+</code></pre>
+<p>If no exception is thrown out, please enter the <code>http://localhost:3838</code> in the browser and then you will see the following GUI:
+<img alt="MRBIGR GUI" src="../img/MRBIGR_GUI_portal.jpg" /></p>
+<p><img alt="#5A9AB9" src="../img/tips%403x.png" /> <strong>Note</strong>: If you encounter the issue like below:</p>
+<pre><code>#0 building with &quot;default&quot; instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.10kB done
+#1 DONE 0.2s
+
+#2 [internal] load metadata for docker.io/crazyhsu/mrbigr_env:v1.2
+#2 ERROR: failed to authorize: failed to fetch anonymous token: Get &quot;https://auth.docker.io/token?scope=repository%3Acrazyhsu%2Fmrbigr_env%3Apull&amp;service=registry.docker.io&quot;: dial tcp [2a03:2880:f130:83:face:b00c:0:25de]:443: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+------
+ &gt; [internal] load metadata for docker.io/crazyhsu/mrbigr_env:v1.2:
+------
+Dockerfile:1
+--------------------
+   1 | &gt;&gt;&gt; FROM crazyhsu/mrbigr_env:v1.2
+   2 |     
+   3 |     ENV CONDA_DEFAULT_ENV=mrbigr
+--------------------
+ERROR: failed to solve: crazyhsu/mrbigr_env:v1.2: failed to authorize: failed to fetch anonymous token: Get &quot;https://auth.docker.io/token?scope=repository%3Acrazyhsu%2Fmrbigr_env%3Apull&amp;service=registry.docker.io&quot;: dial tcp [2a03:2880:f130:83:face:b00c:0:25de]:443: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+</code></pre>
+<p>Please try the following code:</p>
+<pre><code class="language-bash">cd MRBIGR
+docker pull crazyhsu/mrbigr_env:v1.2  # direct pull the images without authorize
+docker build -t mrbigr_image .
+# or
+wget https://zenodo.org/records/13955396/files/mrbigr_env_v1.2.tar
+docker load -i mrbigr_env_v1.2.tar
+docker build -t mrbigr_image .
+</code></pre>
+<p>Then run the docker container:</p>
+<pre><code>curr_dir=$(pwd)
+docker run -dit --name mrbigr_env -p 3838:3838 \
+    -v $curr_dir/MRBIGR_data:/root/MRBIGR/MRBIGR_data \
+    -v $curr_dir/MRBIGR_output/demo:/root/MRBIGR/MRBIGR_output/demo \
+    -v $curr_dir/MRBIGR_log:/root/MRBIGR/MRBIGR_log \
+    -e SHINY_INPUT_PATH=/root/MRBIGR/MRBIGR_data \
+    -e SHINY_OUTPUT_PATH=/root/MRBIGR/MRBIGR_output/demo \
+    -e SHINY_LOG_PATH=/root/MRBIGR/MRBIGR_log \
+    -e SHINY_ROOT_PATH=/root/MRBIGR \
+    mrbigr_image:latest
+</code></pre>
+<h3 id="13-installation-using-conda">1.3 Installation using conda</h3>
+<h4 id="131-build-and-install">1.3.1 Build and install</h4>
+<pre><code class="language-bash">conda create -n mrbigr python=3.7 -y
+conda activate mrbigr
+</code></pre>
+<h4 id="132-install-dependencies">1.3.2 Install dependencies</h4>
+<pre><code class="language-bash">cd MRBIGR  
+python setup.py build  
+python setup.py install  
+</code></pre>
+<h4 id="133-install-dependencies">1.3.3. Install dependencies</h4>
+<pre><code class="language-bash">pip install pyranges  
+conda install -y -c conda-forge r-rcppeigen r-xml r-rsqlite r-europepmc r=3.6 rpy2 vcftools 
+Rscript -e 'install.packages(c(&quot;data.table&quot;, &quot;ggplot2&quot;, &quot;ggsignif&quot;, &quot;ggrepel&quot;,&quot;Matrix&quot;, &quot;igraph&quot;, &quot;network&quot;, &quot;GGally&quot;, &quot;sna&quot;,&quot;tidyr&quot;,&quot;ggraph&quot;,&quot;lme4&quot;,&quot;ggpubr&quot;,&quot;pheatmap&quot;,&quot;factoextra&quot;, &quot;R.utils&quot;), repos=&quot;https://cloud.r-project.org&quot;)' 
+Rscript -e 'if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) install.packages(&quot;BiocManager&quot;, repos=&quot;https://cloud.r-project.org&quot;);BiocManager::install(c(&quot;AnnotationForge&quot;,&quot;clusterProfiler&quot;,&quot;ggtree&quot;))'  
+Rscript -e 'install.packages(&quot;bigsnpr&quot;, dependence=T, repos=&quot;https://cloud.r-project.org&quot;)'
+Rscript -e 'install.packages(&quot;https://cran.r-project.org/src/contrib/Archive/FactoMineR/FactoMineR_1.42.tar.gz&quot;, repos=NULL)'
+</code></pre>
+<h4 id="134-set-environment-variables">1.3.4 Set environment variables</h4>
+<pre><code class="language-bash">echo &quot;export PATH=`pwd`/utils:\$PATH&quot; &gt;&gt; ~/.bashrc  
+echo &quot;export LD_LIBRARY_PATH=`pwd`/utils/libs:\$LD_LIBRARY_PATH&quot; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+<h4 id="135-set-up-mrbigr-gui-app">1.3.5 Set up MRBIGR GUI app</h4>
+<pre><code class="language-bash">Rscript -e &quot;install.packages(c('shiny','bslib','shinyFiles','shinyalert'), repos='https://mirrors.tuna.tsinghua.edu.cn/CRAN/')&quot;
+
+Rscript -e &quot;shiny::runApp('MRBIGR-I/app.R', host = '0.0.0.0', port = 3838)&quot;
+</code></pre>
+<p><img alt="#f03c15" src="https://placehold.co/15x15/f03c15/f03c15.png" /> <strong>Depends</strong>: R(&gt;=3.6), python(&gt;=3.7)</p>
+<hr />
+<h2 id="2-data-preparation">2. Data preparation</h2>
+<p>Using MRBIGR for basic analysis requires only <a href="#genotypic_data">genotypic</a> and <a href="#phenotypic_data">phenotypic</a> data. Users can perform advanced functional analyses and generate visualizations through the use of built-in functions and their combinations (<a href="../Tutorial/">Details in the document</a>). The example datasets used below are from <a href="https://zenodo.org/records/13955396/files/MRBIGR_data.20241019.tar.gz">MRBIGR_data</a>, which contains all the data used for our paper "MRBIGR: a versatile toolbox for genetic causal inference in population-scale multi-omics data".</p>
+<pre><code class="language-bash"># download and unpack MRBIGR_data.tar.gz
+wget https://zenodo.org/records/13955396/files/MRBIGR_data.20241019.tar.gz -O MRBIGR_data.tar.gz
+tar -xvzf MRBIGR_data.tar.gz --transform 's,^MRBIGR_data.20241019,MRBIGR_data,'
+rm MRBIGR_data.tar.gz
+mkdir MRBIGR_output/demo
+</code></pre>
+<h3 id="genotypic_data"> 2.1 Genotypic data</h3>
+
+<p>MRBIGR uses PLINK-bed file format for Genotypic data by default (details see <a href="http://zzz.bwh.harvard.edu/plink/data.shtml#bed">http://zzz.bwh.harvard.edu/plink/data.shtml#bed</a>). The built-in <code>geno</code> module supports converting <a href="#hapmap_format">HapMap</a> or <a href="#vcf_format">VCF</a> formatted genotype files to PLINK-bed format, as well as converting PLINK-bed format to VCF format.</p>
+<h4 id="hapmap_format">2.1.1 HapMap file format</h4>
+
+<p>Hapmap is a commonly used format for storing sequence data where SNP information is stored in the rows and taxa information is stored in the columns. This format allows the SNP information (chromosome and position) and genotypes of each taxa to be stored in a single file.</p>
+<p>The first 11 columns display attributes of the SNPs and the remaining columns show the nucleotides observed at each SNP for each taxa. The first row contains the header labels and each remaining row contains all the information for a single SNP. The first nine SNPs from the tutorial data (<code>MRBIGR_data/chr_HAMP_female.hmp</code>) are presented below.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">rs#</th>
+<th style="text-align: left;">alleles</th>
+<th style="text-align: left;">chrom</th>
+<th style="text-align: left;">posi</th>
+<th style="text-align: left;">strand</th>
+<th style="text-align: left;">assembly</th>
+<th style="text-align: left;">center</th>
+<th style="text-align: left;">protLSID</th>
+<th style="text-align: left;">assayLSID</th>
+<th style="text-align: left;">panelLSID</th>
+<th style="text-align: left;">QCdode</th>
+<th style="text-align: left;">CIMBL32</th>
+<th style="text-align: left;">CIMBL89</th>
+<th style="text-align: left;">CIMBL7</th>
+<th style="text-align: left;">CIMBL45</th>
+<th style="text-align: left;">ZHENG58</th>
+<th style="text-align: left;">...</th>
+<th style="text-align: left;">CIMBL46</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">chr10.s_74401</td>
+<td style="text-align: left;">C/T</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">74401</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">We</td>
+<td style="text-align: left;">Are</td>
+<td style="text-align: left;">The</td>
+<td style="text-align: left;">Maize</td>
+<td style="text-align: left;">Re</td>
+<td style="text-align: left;">Seq</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">TT</td>
+</tr>
+<tr>
+<td style="text-align: left;">chr10.s_76702</td>
+<td style="text-align: left;">A/G</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">76702</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">We</td>
+<td style="text-align: left;">Are</td>
+<td style="text-align: left;">The</td>
+<td style="text-align: left;">Maize</td>
+<td style="text-align: left;">Re</td>
+<td style="text-align: left;">Seq</td>
+<td style="text-align: left;">GG</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">GG</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">GG</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">AA</td>
+</tr>
+<tr>
+<td style="text-align: left;">chr10.s_92823</td>
+<td style="text-align: left;">C/T</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">92823</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">We</td>
+<td style="text-align: left;">Are</td>
+<td style="text-align: left;">The</td>
+<td style="text-align: left;">Maize</td>
+<td style="text-align: left;">Re</td>
+<td style="text-align: left;">Seq</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">CC</td>
+</tr>
+<tr>
+<td style="text-align: left;">chr10.s_94339</td>
+<td style="text-align: left;">T/A</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">94339</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">We</td>
+<td style="text-align: left;">Are</td>
+<td style="text-align: left;">The</td>
+<td style="text-align: left;">Maize</td>
+<td style="text-align: left;">Re</td>
+<td style="text-align: left;">Seq</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">TT</td>
+</tr>
+<tr>
+<td style="text-align: left;">chr10.s_94579</td>
+<td style="text-align: left;">C/G</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">94579</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">We</td>
+<td style="text-align: left;">Are</td>
+<td style="text-align: left;">The</td>
+<td style="text-align: left;">Maize</td>
+<td style="text-align: left;">Re</td>
+<td style="text-align: left;">Seq</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">GG</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">GG</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">GG</td>
+</tr>
+<tr>
+<td style="text-align: left;">chr10.s_94901</td>
+<td style="text-align: left;">G/A</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">94901</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">We</td>
+<td style="text-align: left;">Are</td>
+<td style="text-align: left;">The</td>
+<td style="text-align: left;">Maize</td>
+<td style="text-align: left;">Re</td>
+<td style="text-align: left;">Seq</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">AA</td>
+</tr>
+<tr>
+<td style="text-align: left;">chr10.s_94930</td>
+<td style="text-align: left;">T/G</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">94930</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">We</td>
+<td style="text-align: left;">Are</td>
+<td style="text-align: left;">The</td>
+<td style="text-align: left;">Maize</td>
+<td style="text-align: left;">Re</td>
+<td style="text-align: left;">Seq</td>
+<td style="text-align: left;">GG</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">GG</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">GG</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">TT</td>
+</tr>
+<tr>
+<td style="text-align: left;">chr10.s_108603</td>
+<td style="text-align: left;">C/T</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">108603</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">We</td>
+<td style="text-align: left;">Are</td>
+<td style="text-align: left;">The</td>
+<td style="text-align: left;">Maize</td>
+<td style="text-align: left;">Re</td>
+<td style="text-align: left;">Seq</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">CC</td>
+</tr>
+<tr>
+<td style="text-align: left;">chr10.s_108610</td>
+<td style="text-align: left;">C/T</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">108610</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">We</td>
+<td style="text-align: left;">Are</td>
+<td style="text-align: left;">The</td>
+<td style="text-align: left;">Maize</td>
+<td style="text-align: left;">Re</td>
+<td style="text-align: left;">Seq</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">CC</td>
+<td style="text-align: left;">TT</td>
+<td style="text-align: left;">...</td>
+<td style="text-align: left;">CC</td>
+</tr>
+</tbody>
+</table>
+<h4 id="vcf_format">2.1.2 VCF file format</h4>
+
+<p>VCF (Variant Call Format) file is a standard text file format for storing genomic variation information. This format is widely used in genomic research, especially when it comes to the difference between the genome sequence of an individual or a population and the reference genome. VCF files can describe multiple types of genetic variations, such as single nucleotide polymorphisms (SNPs), insertions/deletions (InDels), structural variations, etc.</p>
+<p>The basic structure of a VCF file consists of two parts: header information and data lines. The header information starts with ## and contains the file's metadata such as format version, generation program, etc., and defines the column name with the #CHROM line; the data part lists the information of each variant site in detail, including chromosome number, position, identifier, reference and alternative bases, quality score, filtering status, additional information and sample-specific data. The first five SNPs from the converted data (<code>MRBIGR_output/demo/geno/chr_HAMP_female.vcf.vcf</code>) are presented below.</p>
+<pre><code class="language-bash">##fileformat=VCFv4.2
+##fileDate=20241004
+##source=PLINKv1.90
+##contig=&lt;ID=10,length=150903390&gt;
+##contig=&lt;ID=1,length=306984567&gt;
+##contig=&lt;ID=2,length=209800297&gt;
+##contig=&lt;ID=3,length=235647547&gt;
+##contig=&lt;ID=4,length=246987745&gt;
+##contig=&lt;ID=5,length=223818355&gt;
+##contig=&lt;ID=6,length=173410493&gt;
+##contig=&lt;ID=7,length=182367039&gt;
+##contig=&lt;ID=8,length=181101714&gt;
+##contig=&lt;ID=9,length=159764980&gt;
+##INFO=&lt;ID=PR,Number=0,Type=Flag,Description=&quot;Provisional reference allele, may not be based on real reference genome&quot;&gt;
+##FORMAT=&lt;ID=GT,Number=1,Type=String,Description=&quot;Genotype&quot;&gt;
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  CIMBL32 CIMBL89 CIMBL7  CIMBL45 ZHENG58 CML415  CIMBL46 CIMBL70 CIMBL124        CIMBL68 CIMBL77 CML324  CML326  CIMBL69 CIMBL23 CIMBL71 
+10      74401   chr10.s_74401   C       T       .       .       PR      GT      0/0     1/1     0/0     1/1     0/0     1/1     1/1     1/1     0/0     1/1     1/1     0/0     0/1     1/1     1/1     1/1     
+10      76702   chr10.s_76702   G       A       .       .       PR      GT      0/0     1/1     0/0     1/1     0/0     1/1     1/1     1/1     0/0     1/1     1/1     0/0     0/1     1/1     1/1     1/1     
+10      92823   chr10.s_92823   C       T       .       .       PR      GT      0/0     0/0     0/0     0/0     0/0     0/0     0/0     0/0     0/0     0/0     0/0     0/0     0/0     0/0     0/0     0/0     
+10      94339   chr10.s_94339   A       T       .       .       PR      GT      0/0     1/1     0/0     1/1     0/0     1/1     1/1     1/1     0/0     1/1     1/1     0/0     1/1     1/1     1/1     1/1     
+10      94579   chr10.s_94579   C       G       .       .       PR      GT      0/0     1/1     0/0     1/1     0/0     1/1     1/1     1/1     0/0     1/1     1/1     0/0     1/1     1/1     1/1     1/1    
+</code></pre>
+<h3 id="phenotypic_data">2.2 Phenotypic data</h3>
+
+<p>Phenotypic file includes multiple phenotype columns. Taxa names should be in the first column of the phenotypic data file and the remaining columns should contain the observed phenotype from each individual. Missing data should be indicated by either <code>NaN</code> or <code>NA</code>. MRBIGR supports many types of datasets as phenotypic file, as long as the data is provided in comma-separated value format, i.e., CSV file. The three most commonly used data types are presented below.</p>
+<h4 id="221-trait-file">2.2.1 Trait file</h4>
+<p>The first nine observations in the tutorial data (<code>MRBIGR_data/blup_traits_final.new.csv</code>) are displayed as follows:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Trait</th>
+<th style="text-align: left;">Plantheight</th>
+<th style="text-align: left;">Earheight</th>
+<th style="text-align: left;">Earleafwidth</th>
+<th style="text-align: left;">Earleaflength</th>
+<th style="text-align: left;">Tasselmainaxislength</th>
+<th style="text-align: left;">Tasselbranchnumber</th>
+<th style="text-align: left;">Leafnumberaboveear</th>
+<th style="text-align: left;">Earlength</th>
+<th style="text-align: left;">Eardiameter</th>
+<th style="text-align: left;">Cobdiameter</th>
+<th style="text-align: left;">Kernernumberperrow</th>
+<th style="text-align: left;">100grainweight</th>
+<th style="text-align: left;">cobweight</th>
+<th style="text-align: left;">Kernelwidth</th>
+<th style="text-align: left;">Silkingtime</th>
+<th style="text-align: left;">Pollenshed</th>
+<th style="text-align: left;">Headingdate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">150</td>
+<td style="text-align: left;">199.40686200000002</td>
+<td style="text-align: left;">84.09240313</td>
+<td style="text-align: left;">8.415551016</td>
+<td style="text-align: left;">62.57602963</td>
+<td style="text-align: left;">26.18701812</td>
+<td style="text-align: left;">7.0083920310000005</td>
+<td style="text-align: left;">5.446805873</td>
+<td style="text-align: left;">13.16553466</td>
+<td style="text-align: left;">3.814461974</td>
+<td style="text-align: left;">2.3336648540000002</td>
+<td style="text-align: left;">24.01368699</td>
+<td style="text-align: left;">18.66442693</td>
+<td style="text-align: left;">18.73223124</td>
+<td style="text-align: left;">6.948005094</td>
+<td style="text-align: left;">69.5634</td>
+<td style="text-align: left;">67.3508</td>
+<td style="text-align: left;">64.3586</td>
+</tr>
+<tr>
+<td style="text-align: left;">177</td>
+<td style="text-align: left;">167.7376926</td>
+<td style="text-align: left;">62.32666383</td>
+<td style="text-align: left;">8.336793644</td>
+<td style="text-align: left;">75.84687159999999</td>
+<td style="text-align: left;">26.86362604</td>
+<td style="text-align: left;">8.25953511</td>
+<td style="text-align: left;">5.364463679</td>
+<td style="text-align: left;">13.24180052</td>
+<td style="text-align: left;">3.664731428</td>
+<td style="text-align: left;">2.3747896369999997</td>
+<td style="text-align: left;">23.22662586</td>
+<td style="text-align: left;">22.17517342</td>
+<td style="text-align: left;">16.69770013</td>
+<td style="text-align: left;">7.95607262</td>
+<td style="text-align: left;">69.1351</td>
+<td style="text-align: left;">67.5734</td>
+<td style="text-align: left;">66.1437</td>
+</tr>
+<tr>
+<td style="text-align: left;">238</td>
+<td style="text-align: left;">195.1777397</td>
+<td style="text-align: left;">65.90031644</td>
+<td style="text-align: left;">9.38907964</td>
+<td style="text-align: left;">78.97464118</td>
+<td style="text-align: left;">27.64054122</td>
+<td style="text-align: left;">9.749416145</td>
+<td style="text-align: left;">5.498509112000001</td>
+<td style="text-align: left;">13.84549223</td>
+<td style="text-align: left;">3.7085016239999997</td>
+<td style="text-align: left;">2.4834557630000003</td>
+<td style="text-align: left;">23.399574100000002</td>
+<td style="text-align: left;">21.94336045</td>
+<td style="text-align: left;">17.4338478</td>
+<td style="text-align: left;">8.18091486</td>
+<td style="text-align: left;">74.5957</td>
+<td style="text-align: left;">71.9141</td>
+<td style="text-align: left;">69.8254</td>
+</tr>
+<tr>
+<td style="text-align: left;">268</td>
+<td style="text-align: left;">160.7956655</td>
+<td style="text-align: left;">52.69387703</td>
+<td style="text-align: left;">8.844888078</td>
+<td style="text-align: left;">70.42957469</td>
+<td style="text-align: left;">28.36394677</td>
+<td style="text-align: left;">6.981059882</td>
+<td style="text-align: left;">5.635426946</td>
+<td style="text-align: left;">10.73827719</td>
+<td style="text-align: left;">3.66728469</td>
+<td style="text-align: left;">2.257745983</td>
+<td style="text-align: left;">19.08355482</td>
+<td style="text-align: left;">18.86634823</td>
+<td style="text-align: left;">14.05614498</td>
+<td style="text-align: left;">7.360464037000001</td>
+<td style="text-align: left;">71.2765</td>
+<td style="text-align: left;">68.90899999999999</td>
+<td style="text-align: left;">65.6974</td>
+</tr>
+<tr>
+<td style="text-align: left;">501</td>
+<td style="text-align: left;">170.01783559999998</td>
+<td style="text-align: left;">62.25478889</td>
+<td style="text-align: left;">8.796211646</td>
+<td style="text-align: left;">67.83068252</td>
+<td style="text-align: left;">26.54872089</td>
+<td style="text-align: left;">6.3387543729999996</td>
+<td style="text-align: left;">5.772344781</td>
+<td style="text-align: left;">10.33143474</td>
+<td style="text-align: left;">4.086384316</td>
+<td style="text-align: left;">2.546535413</td>
+<td style="text-align: left;">22.25759352</td>
+<td style="text-align: left;">25.83110804</td>
+<td style="text-align: left;">17.26231825</td>
+<td style="text-align: left;">8.435537529</td>
+<td style="text-align: left;">71.2765</td>
+<td style="text-align: left;">69.7994</td>
+<td style="text-align: left;">66.2553</td>
+</tr>
+<tr>
+<td style="text-align: left;">647</td>
+<td style="text-align: left;">143.4828657</td>
+<td style="text-align: left;">68.96951963</td>
+<td style="text-align: left;">6.5188109789999995</td>
+<td style="text-align: left;">65.55214977</td>
+<td style="text-align: left;">25.94091108</td>
+<td style="text-align: left;">17.84754152</td>
+<td style="text-align: left;">4.351873538</td>
+<td style="text-align: left;">6.8750427389999995</td>
+<td style="text-align: left;">2.557710224</td>
+<td style="text-align: left;">1.4466421669999998</td>
+<td style="text-align: left;">16.79624763</td>
+<td style="text-align: left;">11.789889599999999</td>
+<td style="text-align: left;">4.497660526000001</td>
+<td style="text-align: left;">5.1284208730000005</td>
+<td style="text-align: left;">72.24015</td>
+<td style="text-align: left;">70.9124</td>
+<td style="text-align: left;">66.7015</td>
+</tr>
+<tr>
+<td style="text-align: left;">812</td>
+<td style="text-align: left;">164.7820379</td>
+<td style="text-align: left;">57.30049720000001</td>
+<td style="text-align: left;">8.435240359</td>
+<td style="text-align: left;">71.97071207</td>
+<td style="text-align: left;">27.00737492</td>
+<td style="text-align: left;">7.468018377999999</td>
+<td style="text-align: left;">4.7605753260000006</td>
+<td style="text-align: left;">11.73433366</td>
+<td style="text-align: left;">3.678227239</td>
+<td style="text-align: left;">2.319895255</td>
+<td style="text-align: left;">21.14170296</td>
+<td style="text-align: left;">22.99261918</td>
+<td style="text-align: left;">11.90201965</td>
+<td style="text-align: left;">8.541258052</td>
+<td style="text-align: left;">68.7068</td>
+<td style="text-align: left;">66.4604</td>
+<td style="text-align: left;">65.6974</td>
+</tr>
+<tr>
+<td style="text-align: left;">1323</td>
+<td style="text-align: left;">183.0386928</td>
+<td style="text-align: left;">70.55827585</td>
+<td style="text-align: left;">10.53762464</td>
+<td style="text-align: left;">70.99257322</td>
+<td style="text-align: left;">32.98852183</td>
+<td style="text-align: left;">5.730474602</td>
+<td style="text-align: left;">5.672768174</td>
+<td style="text-align: left;">12.49229884</td>
+<td style="text-align: left;">4.136537665</td>
+<td style="text-align: left;">2.9266879930000003</td>
+<td style="text-align: left;">21.17811141</td>
+<td style="text-align: left;">22.25630796</td>
+<td style="text-align: left;">24.18210638</td>
+<td style="text-align: left;">8.20176116</td>
+<td style="text-align: left;">75.4523</td>
+<td style="text-align: left;">73.5836</td>
+<td style="text-align: left;">71.9452</td>
+</tr>
+<tr>
+<td style="text-align: left;">1462</td>
+<td style="text-align: left;">211.1751917</td>
+<td style="text-align: left;">88.14599481</td>
+<td style="text-align: left;">9.699733717</td>
+<td style="text-align: left;">84.89124385</td>
+<td style="text-align: left;">34.74483117</td>
+<td style="text-align: left;">11.73294927</td>
+<td style="text-align: left;">6.547893356</td>
+<td style="text-align: left;">17.13560948</td>
+<td style="text-align: left;">4.340433828</td>
+<td style="text-align: left;">2.470617348</td>
+<td style="text-align: left;">32.87164817</td>
+<td style="text-align: left;">25.7713247</td>
+<td style="text-align: left;">22.36770487</td>
+<td style="text-align: left;">8.295569512</td>
+<td style="text-align: left;">70.9553</td>
+<td style="text-align: left;">69.0203</td>
+<td style="text-align: left;">68.0403</td>
+</tr>
+</tbody>
+</table>
+<h4 id="222-gene-expression-file">2.2.2 Gene expression file</h4>
+<p>The first nine observations in the tutorial data (<code>MRBIGR_data/AMP_kernel_transcriptome_v4_FPKM</code>) are displayed as follows:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Zm00001d007718</th>
+<th style="text-align: left;">Zm00001d007716</th>
+<th style="text-align: left;">Zm00001d018986</th>
+<th style="text-align: left;">Zm00001d048402</th>
+<th style="text-align: left;">Zm00001d048403</th>
+<th style="text-align: left;">Zm00001d048404</th>
+<th style="text-align: left;">Zm00001d048407</th>
+<th style="text-align: left;">Zm00001d048342</th>
+<th style="text-align: left;">Zm00001d048393</th>
+<th style="text-align: left;">Zm00001d048394</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">05W002</td>
+<td style="text-align: left;">13.68390968</td>
+<td style="text-align: left;">0.08887555</td>
+<td style="text-align: left;">22.46513484</td>
+<td style="text-align: left;">35.2460181</td>
+<td style="text-align: left;">90.0115652</td>
+<td style="text-align: left;">4.245998763</td>
+<td style="text-align: left;">2.072609286</td>
+<td style="text-align: left;">0.8325380590000001</td>
+<td style="text-align: left;">9.159937637999999</td>
+<td style="text-align: left;">67.86617791</td>
+</tr>
+<tr>
+<td style="text-align: left;">05WN230</td>
+<td style="text-align: left;">0.41449239299999996</td>
+<td style="text-align: left;">0.043290454</td>
+<td style="text-align: left;">24.22802224</td>
+<td style="text-align: left;">38.30711955</td>
+<td style="text-align: left;">77.83880474</td>
+<td style="text-align: left;">2.5675474190000003</td>
+<td style="text-align: left;">6.337722396</td>
+<td style="text-align: left;">0.359176224</td>
+<td style="text-align: left;">11.66285576</td>
+<td style="text-align: left;">95.13785552</td>
+</tr>
+<tr>
+<td style="text-align: left;">07KS4</td>
+<td style="text-align: left;">1.514937182</td>
+<td style="text-align: left;">0.094552666</td>
+<td style="text-align: left;">20.89936082</td>
+<td style="text-align: left;">30.22573463</td>
+<td style="text-align: left;">89.46284399999999</td>
+<td style="text-align: left;">2.86870803</td>
+<td style="text-align: left;">4.861722385</td>
+<td style="text-align: left;">1.344393716</td>
+<td style="text-align: left;">4.40600588</td>
+<td style="text-align: left;">96.44533135</td>
+</tr>
+<tr>
+<td style="text-align: left;">1462</td>
+<td style="text-align: left;">2.9976042960000004</td>
+<td style="text-align: left;">0.069739101</td>
+<td style="text-align: left;">17.11780085</td>
+<td style="text-align: left;">19.00876018</td>
+<td style="text-align: left;">65.92898232</td>
+<td style="text-align: left;">2.765295001</td>
+<td style="text-align: left;">5.0446673319999995</td>
+<td style="text-align: left;">0.34219332</td>
+<td style="text-align: left;">8.192603334</td>
+<td style="text-align: left;">78.60389131</td>
+</tr>
+<tr>
+<td style="text-align: left;">150</td>
+<td style="text-align: left;">5.716710774</td>
+<td style="text-align: left;">0.018280516</td>
+<td style="text-align: left;">22.47700014</td>
+<td style="text-align: left;">0.211730029</td>
+<td style="text-align: left;">64.85073286</td>
+<td style="text-align: left;">3.2508831189999996</td>
+<td style="text-align: left;">2.072331077</td>
+<td style="text-align: left;">0.41587338700000004</td>
+<td style="text-align: left;">9.749669454</td>
+<td style="text-align: left;">59.98792917</td>
+</tr>
+<tr>
+<td style="text-align: left;">177</td>
+<td style="text-align: left;">0.38862201799999996</td>
+<td style="text-align: left;">0.083882895</td>
+<td style="text-align: left;">23.34402367</td>
+<td style="text-align: left;">58.74669505</td>
+<td style="text-align: left;">72.21102064</td>
+<td style="text-align: left;">4.7976829819999995</td>
+<td style="text-align: left;">2.037686245</td>
+<td style="text-align: left;">0.654807971</td>
+<td style="text-align: left;">13.24835189</td>
+<td style="text-align: left;">66.17025883</td>
+</tr>
+<tr>
+<td style="text-align: left;">18-599</td>
+<td style="text-align: left;">0.649410418</td>
+<td style="text-align: left;">0.082275625</td>
+<td style="text-align: left;">20.45144972</td>
+<td style="text-align: left;">0.46588138700000004</td>
+<td style="text-align: left;">78.06259285</td>
+<td style="text-align: left;">3.971991299</td>
+<td style="text-align: left;">5.0632273969999995</td>
+<td style="text-align: left;">0.7951806290000001</td>
+<td style="text-align: left;">13.01598039</td>
+<td style="text-align: left;">74.97802633</td>
+</tr>
+<tr>
+<td style="text-align: left;">238</td>
+<td style="text-align: left;">9.543760621</td>
+<td style="text-align: left;">0.095198605</td>
+<td style="text-align: left;">20.834385100000002</td>
+<td style="text-align: left;">14.73831069</td>
+<td style="text-align: left;">71.00077488</td>
+<td style="text-align: left;">2.627118969</td>
+<td style="text-align: left;">3.4174614439999997</td>
+<td style="text-align: left;">0.9766994040000001</td>
+<td style="text-align: left;">1.9633184590000001</td>
+<td style="text-align: left;">36.03050858</td>
+</tr>
+<tr>
+<td style="text-align: left;">268</td>
+<td style="text-align: left;">1.030472507</td>
+<td style="text-align: left;">0.11706547</td>
+<td style="text-align: left;">17.722316199999998</td>
+<td style="text-align: left;">36.98853947</td>
+<td style="text-align: left;">163.2058748</td>
+<td style="text-align: left;">1.9805356109999999</td>
+<td style="text-align: left;">15.65963041</td>
+<td style="text-align: left;">1.206266576</td>
+<td style="text-align: left;">9.333207445</td>
+<td style="text-align: left;">101.6617829</td>
+</tr>
+</tbody>
+</table>
+<h4 id="223-metabolite-abundance-file">2.2.3 Metabolite abundance file</h4>
+<p>The first nine observations in the tutorial data (<code>MRBIGR_data/E3_log2.normalized_phe.csv</code>) are displayed as follows:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">ID</th>
+<th style="text-align: left;">n0004</th>
+<th style="text-align: left;">n0006</th>
+<th style="text-align: left;">n0012</th>
+<th style="text-align: left;">n0014</th>
+<th style="text-align: left;">n0016</th>
+<th style="text-align: left;">n0019</th>
+<th style="text-align: left;">n0020</th>
+<th style="text-align: left;">n0025</th>
+<th style="text-align: left;">n0029</th>
+<th style="text-align: left;">n0033</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">150</td>
+<td style="text-align: left;">23.85756808279454</td>
+<td style="text-align: left;">21.52133253560975</td>
+<td style="text-align: left;">19.429310701409214</td>
+<td style="text-align: left;">17.88465348347412</td>
+<td style="text-align: left;">23.728581650951327</td>
+<td style="text-align: left;">23.323886129502455</td>
+<td style="text-align: left;">23.144138063805507</td>
+<td style="text-align: left;">20.50688186826299</td>
+<td style="text-align: left;">21.385744989040916</td>
+<td style="text-align: left;">17.91415735710555</td>
+</tr>
+<tr>
+<td style="text-align: left;">177</td>
+<td style="text-align: left;">24.060851668708853</td>
+<td style="text-align: left;">22.93337099206989</td>
+<td style="text-align: left;">18.037252010387334</td>
+<td style="text-align: left;">18.91707191416155</td>
+<td style="text-align: left;">26.173789983480603</td>
+<td style="text-align: left;">22.863251815465887</td>
+<td style="text-align: left;">22.931568749661043</td>
+<td style="text-align: left;">19.489348200901247</td>
+<td style="text-align: left;">22.200602015093704</td>
+<td style="text-align: left;">18.037252010387334</td>
+</tr>
+<tr>
+<td style="text-align: left;">238</td>
+<td style="text-align: left;">23.697103421767665</td>
+<td style="text-align: left;">22.049263944412104</td>
+<td style="text-align: left;">19.015635556176196</td>
+<td style="text-align: left;">19.50881803882359</td>
+<td style="text-align: left;">24.13320250890116</td>
+<td style="text-align: left;">22.41699565411851</td>
+<td style="text-align: left;">23.9225235204567</td>
+<td style="text-align: left;">19.36879843924739</td>
+<td style="text-align: left;">22.117435431711307</td>
+<td style="text-align: left;">18.779568681864543</td>
+</tr>
+<tr>
+<td style="text-align: left;">268</td>
+<td style="text-align: left;">24.31008026193824</td>
+<td style="text-align: left;">22.356490926193132</td>
+<td style="text-align: left;">19.89504417298552</td>
+<td style="text-align: left;">19.930126596592963</td>
+<td style="text-align: left;">24.296141071653768</td>
+<td style="text-align: left;">23.39100031911556</td>
+<td style="text-align: left;">23.101493731065926</td>
+<td style="text-align: left;">19.71230028530486</td>
+<td style="text-align: left;">22.815189581096966</td>
+<td style="text-align: left;">17.919986412355946</td>
+</tr>
+<tr>
+<td style="text-align: left;">647</td>
+<td style="text-align: left;">24.516531130157624</td>
+<td style="text-align: left;">22.012226573732015</td>
+<td style="text-align: left;">20.2065768091335</td>
+<td style="text-align: left;">20.477537926576417</td>
+<td style="text-align: left;">25.08131572946815</td>
+<td style="text-align: left;">24.20955339098966</td>
+<td style="text-align: left;">24.141022012936638</td>
+<td style="text-align: left;">20.396237881758427</td>
+<td style="text-align: left;">21.164229940027102</td>
+<td style="text-align: left;">19.23724964702257</td>
+</tr>
+<tr>
+<td style="text-align: left;">1462</td>
+<td style="text-align: left;">24.117435193904463</td>
+<td style="text-align: left;">21.826871578478677</td>
+<td style="text-align: left;">20.447584725205136</td>
+<td style="text-align: left;">17.80499437272362</td>
+<td style="text-align: left;">25.354474345565613</td>
+<td style="text-align: left;">22.707672768009736</td>
+<td style="text-align: left;">22.87829961658445</td>
+<td style="text-align: left;">18.925789113705253</td>
+<td style="text-align: left;">21.995071856772647</td>
+<td style="text-align: left;">17.82997662112729</td>
+</tr>
+<tr>
+<td style="text-align: left;">4019</td>
+<td style="text-align: left;">24.492283584929798</td>
+<td style="text-align: left;">22.767492845636664</td>
+<td style="text-align: left;">21.008812251998197</td>
+<td style="text-align: left;">18.7339719183688</td>
+<td style="text-align: left;">24.598325218007993</td>
+<td style="text-align: left;">22.699223579410997</td>
+<td style="text-align: left;">23.142580918608278</td>
+<td style="text-align: left;">19.28771463375869</td>
+<td style="text-align: left;">21.938764429607698</td>
+<td style="text-align: left;">17.95447465132481</td>
+</tr>
+<tr>
+<td style="text-align: left;">5213</td>
+<td style="text-align: left;">24.759387644740613</td>
+<td style="text-align: left;">21.953048652078188</td>
+<td style="text-align: left;">21.688592242664424</td>
+<td style="text-align: left;">20.353802646644912</td>
+<td style="text-align: left;">26.400803379275068</td>
+<td style="text-align: left;">23.958368717176786</td>
+<td style="text-align: left;">23.16269388084486</td>
+<td style="text-align: left;">20.56383771559438</td>
+<td style="text-align: left;">21.78755866516714</td>
+<td style="text-align: left;">17.638216698650762</td>
+</tr>
+<tr>
+<td style="text-align: left;">5237</td>
+<td style="text-align: left;">25.15653497289918</td>
+<td style="text-align: left;">22.359175010264977</td>
+<td style="text-align: left;">19.336473870765303</td>
+<td style="text-align: left;">18.4374635629781</td>
+<td style="text-align: left;">25.967192501047197</td>
+<td style="text-align: left;">22.846133284156966</td>
+<td style="text-align: left;">23.165763445593072</td>
+<td style="text-align: left;">19.784368059810987</td>
+<td style="text-align: left;">21.540378285014388</td>
+<td style="text-align: left;">18.86966914228456</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-quick-start-of-mrbigr-command-line-based">3. Quick start of MRBIGR (command line based)</h2>
+<p>MRBIGR consists of seven analysis modules: genotype based analysis module <code>geno</code>, phenotype based analysis module <code>pheno</code>, GWAS and SAL related analysis module <code>gwas</code>, Mendelian randomization ralated  analysis （three module：Mendelian randomization analysis module <code>mr</code>, MR-based network construction module <code>net</code> and gene ontology analysis module <code>go</code>） and data visulaization module <code>plot</code>. Each module can be invoked via a subcommand, and each module also provides several functions which can be called with corresponding parameters. </p>
+<p>In this part, only several commonly used functions in each module are shown as examples. For more detailed instructions or GUI operation, please refer to the <a href="../Tutorial/">Tutorial section</a>.</p>
+<h3 id="31-genotypic-data-process">3.1 Genotypic data process</h3>
+<p>If you hava downloaded <a href="https://zenodo.org/records/13955396/files/MRBIGR_data.20241019.tar.gz">MRBIGR_data</a> and unpacked it, you will see a set of plink-bed format genotypic data named <font color=blue>chr_HAMP.bed/chr_HAMP.bim/chr_HAMP.fam</font>. </p>
+<p>First, quality control of the original genotypic data should be performed through the below command:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py geno -qc -g chr_HAMP -o geno_qc -od MRBIGR_output/demo -maf 0.05 -mis 0.2 -mind 0.2  
+</code></pre>
+<p>The subcommand <code>geno</code> invokes the genotype analysis module; parameter <code>-qc</code> calls the quality control function; <code>-g</code> is the prefix of plink-bed format input genotypic data; <code>-o</code> is the output genotypic data prefix; <code>-od</code> is the output directory; <code>-maf</code> is the MAF for a SNP to be kept; <code>-mis</code> is the maximum proportion of missing values for a SNP to be kept; <code>-mind</code> is the maximum proportion of missing values for a sample to be kept. After this step, the QC-filtered genotypic data <font color=blue>geno_qc.bed/geno_qc.bim/geno_qc.fam</font> would be generated. </p>
+<p>Then, dimensionality reduction of the original genotypic data could be performed using the below command:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py geno -clump -g MRBIGR_output/demo/geno/geno_qc -o geno -od MRBIGR_output/demo
+</code></pre>
+<p>The subcommand geno invokes the genotype analysis module; parameter <code>-clump</code> calls the genotype clumping function to keep only one representative SNP per region of LD; <code>-g</code> is the prefix of plink-bed format input genotypic data; <code>-o</code> is the output genotypic data prefix (<code>suffix _clump</code> will be added automatically for the output files); <code>-od</code> is the output directory. After this step, the clumped genotypic data <font color=blue>geno_clump.bed/geno_clump.bim/geno_clump.fam</font> would be generated. </p>
+<p>Last, take the dimensional reduced genotypic data as input to perform principal component analysis using the below command:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py geno -pca -g MRBIGR_output/demo/geno/geno_clump -o geno -od MRBIGR_output/demo 
+</code></pre>
+<p>The subcommand <code>geno</code> invokes the genotype analysis module; parameter <code>-pca</code> calls the principal component analysis function; <code>-g</code> is the prefix of the plink-bed format input genotypic data; <code>-o</code> is the output genotypic data prefix (a suffix <code>_pca</code> will be added automatically for the output files); <code>-od</code> is the output directory. After this step, an output file named <font color=blue>geno_pca.csv</font> would be generated.</p>
+<p><img alt="#5A9AB9" src="../img/tips%403x.png" /> <strong>Note: the all output will generated in <code>MRBIGR_output/demo/geno</code> directory</strong>.</p>
+<h3 id="32-phenotypic-data-process">3.2 Phenotypic data process</h3>
+<p>For the example CSV format phenotype file named <font color=blue>blup_traits_final.new.csv</font> in MRBIGR_data, the quality control of the original phenotypic data should be performed through the below command:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py pheno -qc -p blup_traits_final.new.csv -o blup_traits_final_qc -od MRBIGR_output/demo -mis 0.5 -val 0.1 -rout zscore
+</code></pre>
+<p>The subcommand <code>pheno</code> invokes the phenotype analysis module; parameter <code>-qc</code> calls the quality control function; <code>-p</code> is the input phenotype matrix; <code>-o</code> is the prefix of output file; <code>-od</code> is the output directory; <code>-mis</code> is the missing rate cutoff; <code>-val</code> is the small value cutoff; <code>-rout</code> means outlier removal of phenotypic values with the default method. After this step, a QC-filtered Phenotypic data named <font color=blue>blup_traits_final_qc.phe.csv</font> would be generated. </p>
+<p>Then, take this file as input, perform missing phenotypic value imputation through the below command: </p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py pheno -imput -p MRBIGR_output/demo/pheno/blup_traits_final_qc.phe.csv -o blup_traits_final_qc_imput -od MRBIGR_output/demo
+</code></pre>
+<p>The subcommand <code>pheno</code> invokes the phenotype analysis module; parameter <code>-imput</code> calls the phenotype imputation function; <code>-p</code> is the input phenotype matrix; <code>-o</code> is the prefix of output file; <code>-od</code> is the output directory. After this step, a phenotype file named <font color=blue>blup_traits_final_qc_imput.phe.csv</font> with no <code>NA</code> value would be generated. </p>
+<p>Last, take this file as input to perform phenotypic value normalization using the below command:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py pheno -scale -p MRBIGR_output/demo/pheno/blup_traits_final_qc_imput.phe.csv -o blup_traits_final_qc_imput_norm -od MRBIGR_output/demo -boxcox -minmax  
+</code></pre>
+<p>The subcommand <code>pheno</code> invokes the phenotype analysis module; parameter <code>-scale</code> calls the phenotype scaling/normalization/standardization/transformation function; <code>-p</code> is the input phenotype matrix; <code>-o</code> is the prefix of output file; <code>-od</code> is the output directory; <code>-boxcox</code> and <code>-minmax</code> means perform both box-cox normalization and min-max scaling of the input data. After this step, a phenotype file named <code>blup_traits_final_qc_imput_norm.phe.csv</code> with normalized and scaled phenotypic values would be generated.</p>
+<p>In some cases, phenotypic data are collected from different environment or years, which should be merged through appropriate algorithm such as <code>mean-values</code> or <code>BLUP</code> before further analysis. Here is an example, take one trait from different environment as input, the below command line will merge all the columns using BLUP algorithm:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py pheno -merge -p MRBIGR_data/blup_traits_final.new.csv -o blup_traits_final.blup -od MRBIGR_output/demo -mm blup
+</code></pre>
+<p>The subcommand <code>pheno</code> invokes the phenotype analysis module; parameter <code>-merge</code> calls the phenotype merge function; <code>-p</code> is the input phenotype matrix for a trait in CSV format; <code>-o</code> is the prefix of output file; <code>-od</code> is the output directory; <code>-mm</code> is the merge method. After this step, a phenotype file named <code>blup_traits_final.blup.phe.csv</code> with BLUP merged phenotypic values would be generated.</p>
+<p><img alt="#5A9AB9" src="../img/tips%403x.png" /> <strong>Note: the all output will generated in <code>MRBIGR_output/demo/pheno</code> directory</strong>.</p>
+<h3 id="33-gwas-and-sal-detection">3.3 GWAS and SAL detection</h3>
+<p>Take the plink-bed format genotypic data and CSV format phenotypic data as inputs, GWAS can be performed through the below command:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py gwas -gwas -model gemma_mlm -thread 12 -g MRBIGR_data/chr_HAMP -p MRBIGR_data/AMP_kernel_transcriptome_v4 -od MRBIGR_output/demo  
+</code></pre>
+<p>The subcommand <code>gwas</code> invokes the GWAS and SAL analysis module; parameter <code>-gwas</code> calls the GWAS function; <code>-model</code> is the model to fit, with linear mixed model (lmm) in <code>gemma</code> by default; <code>-thread</code> is the thread number to run the command; <code>-g</code> is the plink-bed format input Genotypic data; <code>-p</code> is the CSV format phenotypic data; <code>-od</code> is the output directory. After this step, an output directory named <code>MRBIGR_output/demo/gwas/gemma/lmm</code> would be generated with the GWAS result files named <font color=blue>Zm00001dxxxxx.assoc.txt</font> in it. </p>
+<p><img alt="#5A9AB9" src="../img/tips%403x.png" /> <strong>Note: the exact output directory is depend on the model you selected, where <code>-model gemma_mlm</code> means the final output directory will be <code>MRBIGR_output/demo/gwas/gemma/lmm</code></strong>.</p>
+<p>Then, SAL can be determined using the below command based on the GWAS results:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py gwas -qtl -g MRBIGR_data/chr_HAMP -thread 6 -i MRBIGR_output/demo/gwas/gemma/lmm -o qtl_output -od MRBIGR_output/demo -p1 1e-5 -p2 1e-3 -p2n 5  
+</code></pre>
+<p>The subcommand gwas invokes the GWAS and SAL analysis module; parameter <code>-qtl</code> calls the SAL detection function; <code>-thread</code> is the thread number to run the command; <code>-i</code> is the GWAS result directory; <code>-o</code> is the output file prefix; <code>-od</code> is the output directory; <code>-p1</code> is the significance threshold for index SNPs used to determine SALs; <code>-p2</code> is the secondary significance threshold for clumped SNPs used to determine the reliability of SALs; <code>-p2n</code> is secondary significance SNP number in a SAL. After this step, an output file named <font color=blue>qtl_output.qtl_res.csv</font> would be generated in <code>MRBIGR_output/demo/gwas/qtl</code>. </p>
+<p>If you want to generate manhattan-plots and QQ-plots for visualization of the GWAS results, the below command should be helpful:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py gwas -visual -thread 12 -i MRBIGR_output/demo/gwas/gemma/lmm -od MRBIGR_output/demo -multi -q MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv   
+</code></pre>
+<p>The subcommand <code>gwas</code> invokes the GWAS and SAL analysis module; parameter <code>-visual</code> calls the visualization function; <code>-thread</code> is the thread number to run the command; <code>-i</code> is the GWAS result directory; <code>-od</code> is the output directory for the generated plots files; parameters <code>-multi</code> and <code>-q</code> are optional, if <code>-multi</code> is set to generate a multi-traits manhattan-plot, <code>-q</code> which is the SAL result file also need to be set.</p>
+<h3 id="34-mendelian-randomization-mr-related-analysis">3.4 Mendelian randomization (MR) related analysis</h3>
+<p>Take the plink-bed format genotypic data, CSV format exposure data, CSV format exposure SAL data and CSV format outcome data as inputs, MR analysis can be performed through the below command:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py mr -g MRBIGR_data/chr_HAMP -exposure MRBIGR_data/AMP_kernel_transcriptome_v4 -qtl MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -outcome MRBIGR_data/blup_traits_final.new.csv -mlm -thread 12 -o g2p -od MRBIGR_output/demo 
+</code></pre>
+<p>The subcommand <code>mr</code> invokes the MR analysis module; parameter -exposure is the CSV format exposure data; -outcome is the CSV format outcome data; <code>-qtl</code> is the CSV format exposure SAL data; <code>-thread</code> is the thread number to run the command; <code>-g</code> is the plink-bed format input Genotypic data; <code>-mlm</code> represents perform MR analysis through mixed linear model; <code>-o</code> is the prefix of output file; <code>-od</code> is the output directory. After this step, a MR result file named <font color=blue>g2p.MR.csv</font> would be generated. </p>
+<p>It also can take the CSV format population gene expression data and CSV format gene SAL data as inputs, pairwise genes MR analysis can be performed through the below command:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py mr -g MRBIGR_data/chr_HAMP -gene_exp MRBIGR_data/AMP_kernel_transcriptome_v4 -pairwise -mlm -qtl MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -thread 12 -o gene_pairwise_mr_out -od MRBIGR_output/demo
+</code></pre>
+<p>The subcommand <code>mr</code> invokes the MR analysis module; parameter <code>-gene_exp</code> is the CSV format population gene expression data; <code>-qtl</code> is the CSV format gene SAL data; <code>-thread</code> is the thread number to run the command; <code>-g</code> is the plink-bed format input Genotypic data; <code>-mlm</code> represents perform MR analysis through mixed linear model; <code>-o</code> is the prefix of output file; <code>-od</code> is the output directory. After this step, a MR result file named <font color=blue>gene_pairwise_mr_out.MR.csv</font> would be generated. </p>
+<p>If you want to perform MR analysis between transcription factor and genes it targets, the below command should be helpful:</p>
+<pre><code class="language-bash">mkdir MRBIGR_output/demo/tmp/
+head -100 MRBIGR_data/gene.anno.tsv &gt; MRBIGR_output/demo/tmp/test_head100_genefunc.txt
+tail -100 MRBIGR_data/gene.anno.tsv &gt; MRBIGR_output/demo/tmp/test_tail100_genefunc.txt
+
+docker exec -it mrbigr_env MRBIGR.py mr -g MRBIGR_data/chr_HAMP -gene_exp MRBIGR_data/AMP_kernel_transcriptome_v4 -tf MRBIGR_output/demo/tmp/test_head100_genefunc.txt -target MRBIGR_output/demo/tmp/test_tail100_genefunc.txt -mlm -qtl MRBIGR_output/demo/gwas/qtl/qtl_output.qtl_res.csv -threads 12 -o tf_test_mr_out -od MRBIGR_output/demo
+</code></pre>
+<p>The subcommand <code>mr</code> invokes the MR analysis module; parameter <code>-gene_exp</code> is the CSV format population gene expression data; <code>-qtl</code> is the CSV format transcription factor SAL data; <code>-tf</code> is the transcription factor annotation file; <code>-target</code> is the annotation files for genes targeted by transcription factors; <code>-thread</code> is the thread number to run the command; <code>-g</code> is the plink-bed format input Genotypic data; <code>-mlm</code> represents perform MR analysis through mixed linear model; <code>-o</code> is the prefix of output file; <code>-od</code> is the output directory. After this step, a MR result file named <font color=blue>tf_test_mr_out.MR.csv</font> would be generated.</p>
+<p><img alt="#5A9AB9" src="../img/tips%403x.png" /> <strong>Note: the all output will generated in <code>MRBIGR_output/demo/mr</code> directory</strong>.</p>
+<h3 id="35-mr-based-network-construction">3.5 MR-based network construction</h3>
+<p>Take the CSV format MR analysis data as input, MR based network analysis can be performed through the below command:</p>
+<pre><code class="language-bash">docker exec -it mrbigr_env MRBIGR.py net -mr MRBIGR_output/demo/mr/gene_pairwise_mr_out.MR.csv -plot -o net_out -od MRBIGR_output/demo
+</code></pre>
+<p>The subcommand <code>net</code> invokes the MR based network analysis module; parameter <code>-mr</code> is the CSV format MR analysis data; <code>-plot</code> represents plot network for each identified network module; <code>-o</code> is the prefix of output file; <code>-od</code> is the output directory. After this step, network edgelist file <font color=blue>net_out.edge_list</font>, ClusterONE software result <font color=blue>net_out.clusterone.result.csv</font>, network module plot <font color=blue>net_out.module*.pdf</font> and final network module file <font color=blue>net_out.module.csv</font> would be generated. </p>
+<p><img alt="#5A9AB9" src="../img/tips%403x.png" /> <strong>Note: the all output will generated in <code>MRBIGR_output/demo/net</code> directory</strong>.</p>
+<h3 id="36-gene-ontology-analysis-of-network-modules">3.6 Gene ontology analysis of network modules</h3>
+<p>Take the CSV format network module data, Tabular format gene ontology annotation of each gene data and Tabular format gene annotation data as inputs, gene ontology enrichment analysis of each module can be performed through the below command:</p>
+<pre><code class="language-bash">csvtk sep -f 3 -t MRBIGR_data/gene.anno.tsv -s &quot;:&quot; -n chr,start-end,strand | csvtk sep -f start-end -t -s &quot;-&quot; -n start,end | csvtk cut -f 1,5,8,9,7,2 -t | csvtk rename -t -f 1-6 -n &quot;gene_id,chr,start,end,stard,annotation&quot; -o MRBIGR_output/demo/tmp/gene_anno.txt
+
+docker exec -it mrbigr_env MRBIGR.py go -gene_lists MRBIGR_output/demo/net/net_out.module.csv -go_anno MRBIGR_data/maize.genes2go.txt -gene_info MRBIGR_output/demo/tmp/gene_anno.txt -o go_out -od MRBIGR_output/demo
+</code></pre>
+<p>The subcommand <code>go</code> invokes the gene ontology enrichment analysis module; parameter <code>-gene_lists</code> is the CSV format network module data; <code>-go_anno</code> is the tabular format gene ontology annotation of each gene data; <code>-gene_info</code> is the tabular format gene annotation data; <code>-o</code> is the prefix of output file; <code>-od</code> is the output directory. After this step, gene ontology enrichment analysis result <font color=blue>go_out.GO.csv</font>, visualized results of functional enrichment results <font color=blue>go_out.BP.dotplot.pdf</font>, <font color=blue>go_out.MF.dotplot.pdf</font> and <font color=blue>go_out.CC.dotplot.pdf</font> would be generated. </p>
+<p><img alt="#5A9AB9" src="../img/tips%403x.png" /> <strong>Note: the all output will generated in <code>MRBIGR_output/demo/go</code> directory</strong>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Tutorial/" class="btn btn-neutral float-right" title="Tutorial">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/CrazyHsu/MRBIGR/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Tutorial/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
